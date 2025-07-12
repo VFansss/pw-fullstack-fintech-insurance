@@ -163,6 +163,10 @@ REST_FRAMEWORK = {
     'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
 }
 
+REST_AUTH = {
+    'REGISTER_SERIALIZER': 'insurance.serializers.CustomRegisterSerializer',
+}
+
 # Impostazioni di CORS
 # Specifica l'origine del nostro frontend Svelte
 CORS_ALLOWED_ORIGINS = [
@@ -173,3 +177,13 @@ CORS_ALLOWED_ORIGINS = [
 # Per evitare problemi con CSRF in fase di test con Postman/Insomnia
 # In produzione, va assolutamente rimosso
 CORS_ALLOW_ALL_ORIGINS = True # Rimuovi o imposta a False in produzione
+
+# Specifichiamo che l'autenticazione avviene tramite username O email
+ACCOUNT_AUTHENTICATION_METHOD = 'username_email'
+
+# Non richiediamo la verifica dell'email per la registrazione
+# Questo ci semplifica la vita enormemente, non dovendo configurare un server email.
+ACCOUNT_EMAIL_VERIFICATION = 'none'
+
+# L'email è comunque obbligatoria durante la registrazione
+ACCOUNT_EMAIL_REQUIRED = True
