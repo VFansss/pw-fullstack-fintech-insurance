@@ -16,7 +16,7 @@
                 // Prova a ottenere i dati dell'utente. Questa chiamata fallirà se il token non è valido.
                 await auth.getUser();
                 // Se la chiamata ha successo, il token è valido! Reindirizziamo l'utente alla sua dashboard.
-                goto('/dashboard'); 
+                goto('/dashboard', { replaceState: true }); 
             } catch (error) {
                 // Il token non è valido. Lo rimuoviamo per sicurezza e lasciamo l'utente sulla pagina di login.
                 localStorage.removeItem('authToken');
@@ -33,7 +33,7 @@
             console.log('Login riuscito! Token:', result.key);
             localStorage.setItem('authToken', result.key);
             
-            goto('/dashboard');
+            goto('/dashboard', { replaceState: true });
             
         } catch (error: any) {
             errorMessage = error.message || 'Errore sconosciuto.';
