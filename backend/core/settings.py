@@ -37,10 +37,30 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    # App di terze parti
+    'rest_framework',
+    'rest_framework.authtoken',
+    'dj_rest_auth',
+    'corsheaders',
+    
+    # Dipendenze di dj-rest-auth
+    'django.contrib.sites', 
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'dj_rest_auth.registration',
+
+    # La mia app!
+    'insurance.apps.InsuranceConfig',
+
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    # Aggiungi questa riga
+    'allauth.account.middleware.AccountMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -120,3 +140,33 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+#
+# Impostazioni per DRF e Dj-Rest-Auth
+#
+
+# Aggiunto per django-allauth
+SITE_ID = 1 
+
+# Impostazioni di Django REST Framework
+REST_FRAMEWORK = {
+    # Usa l'autenticazione a Token.
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',
+    ],
+    # Di default, richiede che l'utente sia autenticato per accedere alle API
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
+    ]
+}
+
+# Impostazioni di CORS
+# Specifica l'origine del nostro frontend Svelte
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:5173", # Porta di default di SvelteKit dev server
+    "http://127.0.0.1:5173",
+]
+
+# Per evitare problemi con CSRF in fase di test con Postman/Insomnia
+# In produzione, va assolutamente rimosso
+CORS_ALLOW_ALL_ORIGINS = True # Rimuovi o imposta a False in produzione
