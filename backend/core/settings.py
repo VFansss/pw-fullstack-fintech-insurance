@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'dj_rest_auth',
     'corsheaders',
+    'drf_spectacular',
     
     # Dipendenze di dj-rest-auth
     'django.contrib.sites', 
@@ -157,7 +158,9 @@ REST_FRAMEWORK = {
     # Di default, richiede che l'utente sia autenticato per accedere alle API
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAuthenticated',
-    ]
+    ],
+    # Per usare drt_spectacular per la documentazione delle API
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
 }
 
 # Impostazioni di CORS
