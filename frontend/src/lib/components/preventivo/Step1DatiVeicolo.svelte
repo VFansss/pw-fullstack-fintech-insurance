@@ -62,6 +62,7 @@
 			id="license_plate"
 			bind:value={formData.license_plate}
 			maxlength="7"
+			placeholder="Es. AB123CD"
 			class="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm"
 			required
 		/>
