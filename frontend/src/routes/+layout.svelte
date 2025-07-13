@@ -5,3 +5,6 @@
 </script>
 
 {@render children()}
+
+
+export const prerender = true;
