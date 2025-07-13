@@ -7,6 +7,7 @@
 
 	// === STATO PER LA NAVBAR ===
 	let isMenuOpen = $state(false);
+	let isMobileMenuOpen = $state(false);
 
 	// === STATO PER L'HERO A ROTAZIONE ===
 	const backgroundImages = [
@@ -48,6 +49,8 @@
 				<Logo class="h-8 w-8 text-blue-600" />
 				<span class="text-2xl font-bold text-gray-800">AlCoperto</span>
 			</a>
+			
+			<!-- Desktop Menu -->
 			<div class="hidden md:flex items-center space-x-6">
 				<div class="relative">
 					<button onclick={() => isMenuOpen = !isMenuOpen} class="flex items-center text-gray-700 hover:text-blue-600">
@@ -66,8 +69,52 @@
 				<a href="/login" class="px-4 py-2 text-gray-800 font-semibold rounded-lg hover:bg-gray-100">Area Personale</a>
 				<button onclick={() => goto('/preventivatore/auto')} class="px-5 py-2 bg-blue-600 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 transition-colors">Fai un preventivo</button>
 			</div>
-			<!-- Aggiungi qui un hamburger menu per il mobile se vuoi -->
+			
+			<!-- Mobile Menu Button -->
+			<button 
+				onclick={() => isMobileMenuOpen = !isMobileMenuOpen}
+				class="md:hidden p-2 rounded-lg hover:bg-gray-100 transition-colors"
+				aria-label="Toggle mobile menu"
+			>
+				<svg class="h-6 w-6 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+					{#if isMobileMenuOpen}
+						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+					{:else}
+						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+					{/if}
+				</svg>
+			</button>
 		</div>
+		
+		<!-- Mobile Menu -->
+		{#if isMobileMenuOpen}
+			<div class="md:hidden bg-white border-t border-gray-200 py-4">
+				<div class="container mx-auto px-6 space-y-3">
+					<!-- Mobile Insurance Submenu -->
+					<div class="space-y-2">
+						<div class="text-sm font-semibold text-gray-500 uppercase tracking-wide">Assicurazioni</div>
+						<a href="/preventivatore/auto" onclick={() => isMobileMenuOpen = false} class="block px-3 py-2 text-gray-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg">🚗 Assicurazione Auto</a>
+						<a href="/preventivatore/moto" onclick={() => isMobileMenuOpen = false} class="block px-3 py-2 text-gray-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg">🏍️ Assicurazione Moto</a>
+						<a href="/preventivatore/autocarro" onclick={() => isMobileMenuOpen = false} class="block px-3 py-2 text-gray-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg">🚚 Assicurazione Autocarro</a>
+					</div>
+					
+					<!-- Divider -->
+					<div class="border-t border-gray-200 my-4"></div>
+					
+					<!-- Other Menu Items -->
+					<a href="#" onclick={() => isMobileMenuOpen = false} class="block px-3 py-2 text-gray-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg">Chi siamo</a>
+					<a href="/login" onclick={() => isMobileMenuOpen = false} class="block px-3 py-2 text-gray-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg">Area Personale</a>
+					
+					<!-- CTA Button -->
+					<button 
+						onclick={() => { goto('/preventivatore/auto'); isMobileMenuOpen = false; }}
+						class="w-full mt-4 px-5 py-3 bg-blue-600 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 transition-colors"
+					>
+						Fai un preventivo
+					</button>
+				</div>
+			</div>
+		{/if}
 	</nav>
 
 	<!-- ================== HERO SECTION A ROTAZIONE ================== -->
