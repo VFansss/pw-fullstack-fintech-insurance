@@ -84,7 +84,7 @@
     {#if !isLoading && !error}
     <section 
         class="bg-cover bg-center py-12 text-white relative"
-        style="background-image: url('/mk-banner.jpg');"
+        style={"background-image: url("+base+"'/mk-banner.jpg'"}
     >
         <!-- Overlay per leggibilità -->
         <div class="absolute inset-0 bg-black opacity-50"></div>
