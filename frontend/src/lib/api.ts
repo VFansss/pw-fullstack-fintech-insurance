@@ -86,6 +86,16 @@ export interface QuoteData {
     email: string;
 }
 
+interface SimulateQuoteData {
+    car_brand: string;
+    car_model: string;
+    license_plate: string;
+    km_per_year: string;
+    driving_style: string;
+    birth_date: string;
+    license_year: number;
+}
+
 /*
 
     --- 3. EXPORTS PER DOMINIO ---
@@ -115,6 +125,18 @@ export const quotes = {
     /**
      * Crea un nuovo preventivo.
      * La logica del backend associerà il preventivo all'utente se la chiamata è autenticata.
+     */
+    /**
+     * Calcola un preventivo senza salvarlo. Endpoint pubblico.
+     */
+    simulate: (simulationData: SimulateQuoteData) => 
+        apiFetch('/api/quotes/simulate/', {
+            method: 'POST',
+            body: JSON.stringify(simulationData)
+        }),
+
+    /**
+     * Crea e salva un nuovo preventivo. Richiede autenticazione.
      */
     create: (quoteData: QuoteData) => 
         apiFetch('/api/quotes/', {

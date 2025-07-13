@@ -1,12 +1,12 @@
 <script lang="ts">
+
 	import { page } from '$app/state';
 	import { goto } from '$app/navigation';
 	import { auth, quotes } from '$lib/api';
-
-	// Importa i componenti degli step (come prima)
-	import Step1 from '$lib/components/preventivo/Step1DatiVeicolo.svelte';
-	import Step2 from '$lib/components/preventivo/Step2DatiAnagrafici.svelte';
-	import Step3 from '$lib/components/preventivo/Step3Contatti.svelte';
+	import Step1DatiVeicolo from '$lib/components/preventivo/Step1DatiVeicolo.svelte';
+	import Step2DatiAnagrafici from '$lib/components/preventivo/Step2DatiAnagrafici.svelte';
+	import Step3Risultato from '$lib/components/preventivo/Step3Risultato.svelte';
+	import Step4Contatti from '$lib/components/preventivo/Step4Contatti.svelte';
 	
 	let { data } = $props();
 
@@ -14,19 +14,26 @@
 	let currentStep = $state(1);
 	let isLoading = $state(false);
 	let errorMessage = $state<string | null>(null);
+	let calculatedPrice = $state<number | null>(null);
 
-	// Questo è il nostro stato. Contiene TUTTI i dati che il form può raccogliere.
 	let formData = $state({
+		// Step 1
 		car_brand: '',
 		car_model: '',
 		license_plate: '',
+		km_per_year: '10000-15000', // Valore di default
+
+		// Step 2
 		first_name: '',
 		last_name: '',
 		birth_date: '',
 		license_year: '',
+		driving_style: 'esperta', // Valore di default
+
+		// Step 3
 		email: '',
 		password: '',
-		password2: '',
+		password2: ''
 	});
 	
 	// --- Pre-compilazione REATTIVA con $effect ---
@@ -46,6 +53,29 @@
 		
 		prefillData();
 	});
+
+	async function handleSimulate() {
+        isLoading = true;
+        errorMessage = null;
+        try {
+            // Chiamiamo l'API di simulazione (che dovremo aggiungere a api.ts)
+            const result = await quotes.simulate({
+                car_brand: formData.car_brand,
+                car_model: formData.car_model,
+                license_plate: formData.license_plate,
+                km_per_year: formData.km_per_year,
+                driving_style: formData.driving_style,
+                birth_date: formData.birth_date,
+                license_year: parseInt(formData.license_year) || 0,
+            });
+            calculatedPrice = result.premium_price;
+            currentStep = 3; // Andiamo allo step del risultato
+        } catch (error: any) {
+            errorMessage = error.message;
+        } finally {
+            isLoading = false;
+        }
+    }
 
 	// --- FUNZIONE HANDLESUBMIT CORRETTA ---
 	// Riceve l'evento, non i dati. Non ha bisogno di essere tipizzata qui
@@ -124,35 +154,50 @@
 	{:then [userDataResult, carBrands]}
 		<div class="bg-white p-8 rounded-xl shadow-lg">
             <form onsubmit={handleSubmit}>
+
+				{@debug formData}
+
                 <!-- Renderizziamo lo step giusto, passando il formData -->
                 {#if currentStep === 1}
-                    <Step1 bind:formData {carBrands} vehicleType={page.params.tipo}/>
+                    <Step1DatiVeicolo bind:formData {carBrands} vehicleType={page.params.tipo}/>
                 {:else if currentStep === 2}
-                    <Step2 bind:formData user={userDataResult.user}/>
+                    <Step2DatiAnagrafici bind:formData user={userDataResult.user}/>
                 {:else if currentStep === 3}
-                    <Step3 bind:formData user={userDataResult.user} />
+				 	<Step3Risultato prezzo={calculatedPrice} />
+				{:else if currentStep === 4}
+                    <Step4Contatti bind:formData user={userDataResult.user} />
                 {/if}
 
-                <!-- I PULSANTI DI NAVIGAZIONE SONO QUI, NEL PADRE! -->
                 <div class="mt-8 flex justify-between items-center">
-                    {#if currentStep > 1}
-                        <button type="button" onclick={() => currentStep--} class="...">
-                            ← Indietro
-                        </button>
-                    {:else}
-                        <span></span>
-                    {/if}
+					{#if currentStep > 1}
+						<button type="button" onclick={() => currentStep--} class="...">
+							← Indietro
+						</button>
+					{:else}
+						<span></span>
+					{/if}
 
-                    {#if currentStep < 3}
-                        <button type="button" onclick={() => currentStep++} class="...">
-                            Procedi →
-                        </button>
-                    {:else}
-                        <button type="submit" class="..." disabled={isLoading}>
-                            {#if isLoading}Caricamento...{:else}Ottieni Preventivo{/if}
-                        </button>
-                    {/if}
-                </div>
+					{#if currentStep < 2}
+						<button type="button" onclick={() => currentStep++} class="...">
+							Procedi →
+						</button>
+					{:else if currentStep === 2}
+						<!-- Il pulsante allo step 2 ora chiama handleSimulate -->
+						<button type="button" onclick={handleSimulate} class="..." disabled={isLoading}>
+							{#if isLoading}Calcolo...{:else}Calcola Preventivo{/if}
+						</button>
+					{:else if currentStep === 3}
+						<!-- Il pulsante allo step 3 va allo step finale -->
+						<button type="button" onclick={() => currentStep++} class="...">
+							Salva e Registrati →
+						</button>
+					{:else if currentStep === 4}
+						<!-- Il pulsante finale fa il submit del form -->
+						<button type="submit" class="..." disabled={isLoading}>
+							{#if isLoading}Salvataggio...{:else}Conferma e Salva{/if}
+						</button>
+					{/if}
+				</div>
 
                 {#if errorMessage}
                     <p class="text-red-500 ...">{errorMessage}</p>
