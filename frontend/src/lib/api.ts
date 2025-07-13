@@ -73,6 +73,19 @@ interface RegistrationDetails {
     password2: string;
 }
 
+export interface QuoteData {
+    car_brand: string;
+    car_model: string;
+    license_plate: string;
+    birth_date: string; // Formato "YYYY-MM-DD"
+    license_year: number;
+    // Aggiungiamo anche i dati anagrafici, perché nel caso di un utente
+    // non loggato, sono obbligatori.
+    first_name: string;
+    last_name: string;
+    email: string;
+}
+
 /*
 
     --- 3. EXPORTS PER DOMINIO ---
@@ -96,6 +109,39 @@ export const auth = {
     getUser: () => apiFetch('/api/auth/user/'),
 
     logout: () => apiFetch('/api/auth/logout/', { method: 'POST' }),
+};
+
+export const quotes = {
+    /**
+     * Crea un nuovo preventivo.
+     * La logica del backend associerà il preventivo all'utente se la chiamata è autenticata.
+     */
+    create: (quoteData: QuoteData) => 
+        apiFetch('/api/quotes/', {
+            method: 'POST',
+            body: JSON.stringify(quoteData),
+        }),
+
+    /**
+     * Ottiene la lista dei preventivi per l'utente attualmente autenticato.
+     * Richiede un token valido.
+     */
+    getAll: () => apiFetch('/api/quotes/'),
+
+    /**
+     * Ottiene i dettagli di un singolo preventivo.
+     * Richiede un token valido e che l'utente sia il proprietario del preventivo.
+     */
+    getById: (id: number) => apiFetch(`/api/quotes/${id}/`),
+};
+
+export const general = {
+    /**
+     * Ottiene la lista di tutte le marche di auto disponibili.
+     * È una chiamata pubblica, non richiede autenticazione.
+     * @returns {Promise<string[]>} Una promessa che risolve in un array di stringhe.
+     */
+    getCarBrands: (): Promise<string[]> => apiFetch('/api/car-brands/'),
 };
 
 // Esportiamo anche le funzioni per le altre parti dell'API
