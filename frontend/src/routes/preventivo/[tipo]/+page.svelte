@@ -38,21 +38,17 @@
 		formData.car_brand && formData.car_model.trim()
 	);
 	
-	let isStep2Valid = $derived(() => {
-		if (!formData.birth_date || !formData.license_year) return false;
-		const licenseYearNum = parseInt(formData.license_year);
-		const birthYearNum = new Date(formData.birth_date).getFullYear();
-		return (
-			formData.first_name.trim() && formData.last_name.trim() &&
-			licenseYearNum
-		);
-	});
+	let isStep2Valid = $derived(
+		formData.first_name.trim() !== '' && 
+		formData.last_name.trim() !== '' && 
+		formData.birth_date !== '' && 
+		formData.license_year !== '' && 
+		parseInt(formData.license_year) > 1000
+	);
 
-	let isStep4Valid = $derived(() => {
-		const isUserLoggedIn = (data.streamed.userData)?.success;
-		if (isUserLoggedIn) return true;
-		return formData.email.includes('@') && formData.password.length >= 8 && formData.password === formData.password2;
-	});
+	let isStep4Valid = $derived(
+		formData.email.includes('@') 
+	);
 
 	// Effetto per pre-compilare i dati utente
 	$effect(() => {
@@ -109,6 +105,8 @@
 					email: formData.email,
 					password: formData.password,
 					password2: formData.password2,
+					first_name: formData.first_name,
+					last_name: formData.last_name,
 				});
                 // Subito dopo il successo, facciamo il login per ottenere il token
                 const loginResult = await auth.login({ username: formData.email, password: formData.password });
@@ -198,7 +196,7 @@
 							{#if userDataResult.user}Salva Preventivo{:else}Salva e Registrati{/if} →
 						</button>
 					{:else if currentStep === 4}
-						<button type="submit" disabled={!isStep4Valid || isLoading} class="px-6 py-2 bg-green-600 text-white rounded-lg shadow-md hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed">
+						<button type="submit" disabled={(!userDataResult.user && !isStep4Valid) || isLoading} class="px-6 py-2 bg-green-600 text-white rounded-lg shadow-md hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed">
 							{#if isLoading}Salvataggio...{:else}Conferma e Salva{/if}
 						</button>
 					{/if}
