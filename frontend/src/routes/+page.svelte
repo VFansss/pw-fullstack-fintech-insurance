@@ -14,13 +14,13 @@
 			<div>
 				<button
 					onclick={() => goto('/dashboard')}
-					class="px-4 py-2 text-gray-800 font-semibold rounded-lg hover:bg-gray-100"
+					class="cursor-pointer px-4 py-2 text-gray-800 font-semibold rounded-lg hover:bg-gray-100"
 				>
 					Area Personale
 				</button>
 				<button
 					onclick={() => goto('/preventivo')}
-					class="ml-2 px-4 py-2 bg-blue-600 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 transition-colors"
+					class="cursor-pointer ml-2 px-4 py-2 bg-blue-600 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 transition-colors"
 				>
 					Fai un preventivo
 				</button>
@@ -62,3 +62,11 @@
 		</div>
 	</footer>
 </div>
+
+<style lang="postcss">
+	/* Selezioniamo tutti gli elementi <button> in questo componente */
+	button {
+		/* Usiamo @apply per "iniettare" le utility class di Tailwind */
+		@apply cursor-pointer;
+	}
+</style>
