@@ -3,7 +3,7 @@ name: Deploy Svelte Static Site to GitHub Pages
 on:
   push:
     branches:
-      - main  # o 'master', a seconda del nome del tuo branch principale
+      - master  # o 'master', a seconda del nome del tuo branch principale
 
 jobs:
   build_site:
