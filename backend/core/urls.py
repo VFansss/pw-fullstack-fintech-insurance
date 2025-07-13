@@ -23,7 +23,7 @@ from rest_framework.routers import DefaultRouter
 from drf_spectacular.views import SpectacularAPIView, SpectacularRedocView, SpectacularSwaggerView
 
 from insurance import views
-from insurance.views import CarBrandsView
+from insurance.views import VehicleDataView
 
 # Inizializza il router
 router = DefaultRouter()
@@ -50,6 +50,6 @@ urlpatterns = [
     path('api/', include(router.urls)),
 
     # Public API
-    path('api/car-brands/', CarBrandsView.as_view(), name='car-brands'),
+    path('api/vehicle-data/<str:vehicle_type>/<str:data_type>/', VehicleDataView.as_view(), name='vehicle-data'),
 
 ]

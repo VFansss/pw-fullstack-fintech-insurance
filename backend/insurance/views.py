@@ -46,18 +46,8 @@ class QuoteViewSet(viewsets.ModelViewSet):
             # Altrimenti, salviamo il preventivo senza utente associato.
             serializer.save(premium_price=prezzo_calcolato)
 
-
-class CarBrandsView(APIView):
-    """
-    Una vista pubblica per ottenere la lista delle marche di auto.
-    """
-    permission_classes = [permissions.AllowAny] # Tutti possono accedere
-
-    def get(self, request, format=None):
-        """
-        Restituisce una lista hardcodata di marche di auto.
-        """
-        car_brands = [
+BRANDS_DATA = {
+    'auto': [
             "ALFA ROMEO", "ALPINA-BMW", "ARIEL", "ASTON MARTIN", "AUDI",
             "BENTLEY", "BMW", "BOXEL", "BREMACH", "CADILLAC", "CATERHAM",
             "CHEVROLET", "CHRYSLER", "CITROEN", "DAEWOO", "DAIHATSU",
@@ -65,9 +55,39 @@ class CarBrandsView(APIView):
             "ISUZU", "JAGUAR", "JEEP", "KIA", "LADA", "LAMBORGHINI",
             "LANCIA", "LAND ROVER", "LEXUS", "LOTUS", "MARCOS", "MASERATI",
             "MAZDA", "MAZZIERI", "MERCEDES", "MG", "MINI", "MITSUBISHI",
-            "MORGAN", "NISSAN", "OPEL", "PAGANI", "PEUGEOT", "PORSCHE",
+            "MORGAN", "NISSAN", "OPEL", "PEUGEOT", "PORSCHE",
             "QVALE", "RENAULT", "RENAULT V.I.", "ROLLS ROYCE", "ROVER",
             "SAAB", "SEAT", "SKODA", "SMART", "SSANGYONG", "SUBARU",
-            "SUZUKI", "TATA", "TOYOTA", "TVR", "VENTURI", "VOLKSWAGEN", "VOLVO"
-        ]
-        return Response(car_brands)
+            "TATA", "TOYOTA", "TVR", "VENTURI", "VOLKSWAGEN", "VOLVO"
+    ],
+    'moto': [
+        "APRILIA", "BMW", "DUCATI", "HARLEY-DAVIDSON", "HONDA", "KAWASAKI",
+        "KTM", "MOTO GUZZI", "MV AGUSTA", "PIAGGIO", "SUZUKI", "TRIUMPH", "YAMAHA"
+    ],
+    'autocarro': [
+        "IVECO", "MAN", "MERCEDES-BENZ TRUCKS", "RENAULT TRUCKS", 
+        "SCANIA", "VOLVO TRUCKS"
+    ]
+}
+
+class VehicleDataView(APIView):
+    """
+    Vista pubblica per ottenere dati specifici per tipo di veicolo.
+    Esempio: /api/vehicle-data/auto/brands/
+    """
+    permission_classes = [permissions.AllowAny]
+
+    def get(self, request, vehicle_type, data_type, format=None):
+        """
+        Restituisce dati specifici (es. 'brands') per un tipo di veicolo.
+        """
+        if data_type == 'brands':
+            # Controlla se il tipo di veicolo esiste nei nostri dati
+            if vehicle_type in BRANDS_DATA:
+                return Response(BRANDS_DATA[vehicle_type])
+            else:
+                # Se il tipo non esiste, restituisci un 404 Not Found
+                return Response({"error": f"Tipo di veicolo '{vehicle_type}' non trovato."}, status=404)
+        
+        # In futuro, potremmo avere altri tipi di dati, es. /models/
+        return Response({"error": f"Tipo di dati '{data_type}' non supportato."}, status=400)

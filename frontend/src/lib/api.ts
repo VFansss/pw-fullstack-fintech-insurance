@@ -136,12 +136,8 @@ export const quotes = {
 };
 
 export const general = {
-    /**
-     * Ottiene la lista di tutte le marche di auto disponibili.
-     * È una chiamata pubblica, non richiede autenticazione.
-     * @returns {Promise<string[]>} Una promessa che risolve in un array di stringhe.
-     */
-    getCarBrands: (): Promise<string[]> => apiFetch('/api/car-brands/'),
+    getVehicleBrands: (vehicleType: string): Promise<string[]> => 
+        apiFetch(`/api/vehicle-data/${vehicleType}/brands/`),
 };
 
 // Esportiamo anche le funzioni per le altre parti dell'API

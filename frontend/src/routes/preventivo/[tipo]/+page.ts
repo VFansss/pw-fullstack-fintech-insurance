@@ -3,13 +3,12 @@
 import { auth, general } from '$lib/api';
 import type { PageLoad } from './$types';
 
-export const load: PageLoad = async () => {
+export const load: PageLoad = async ({ params }) => {
+
+    const vehicleType = params.tipo; 
 
     // Funzione per caricare le marche. Già sicura con .catch().
-    const fetchBrands = () => general.getCarBrands().catch(() => {
-        console.error("Fallimento nel caricamento delle marche di auto.");
-        return []; // Restituisce sempre un valore valido (array vuoto).
-    });
+    const fetchBrands = () => general.getVehicleBrands(vehicleType).catch(() => []);
 
     // Funzione per caricare l'utente, ORA A PROVA DI BOMBA.
     const fetchUser = async () => {
