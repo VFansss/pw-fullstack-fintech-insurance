@@ -12,10 +12,23 @@
 	type Props = {
 		formData: FormData;
 		carBrands: string[];
+		vehicleType: string;
 	};
 
+	function getPlaceholder(vehicleType: string): string {
+        switch (vehicleType) {
+            case 'moto':
+                return 'Es. Monster, Scrambler, Panigale';
+            case 'autocarro':
+                return 'Es. Daily, Ducato, Sprinter';
+            case 'auto':
+            default:
+                return 'Es. Panda, Golf, Yaris';
+        }
+    }
+
 	// Unica chiamata a $props()
-	let { formData = $bindable(), carBrands }: Props = $props();
+	let { formData = $bindable(), carBrands, vehicleType }: Props = $props();
 
 </script>
 
@@ -43,7 +56,7 @@
 			type="text"
 			id="car_model"
 			bind:value={formData.car_model}
-			placeholder="Es. Panda, Golf, Yaris"
+			placeholder={getPlaceholder(vehicleType)}
 			class="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
 			required
 		/>

@@ -126,7 +126,7 @@
             <form onsubmit={handleSubmit}>
                 <!-- Renderizziamo lo step giusto, passando il formData -->
                 {#if currentStep === 1}
-                    <Step1 bind:formData {carBrands}/>
+                    <Step1 bind:formData {carBrands} vehicleType={page.params.tipo}/>
                 {:else if currentStep === 2}
                     <Step2 bind:formData user={userDataResult.user}/>
                 {:else if currentStep === 3}
