@@ -18,8 +18,17 @@ from django.contrib import admin
 
 from django.urls import path, include, reverse_lazy
 from django.views.generic.base import RedirectView
+from rest_framework.routers import DefaultRouter
 
 from drf_spectacular.views import SpectacularAPIView, SpectacularRedocView, SpectacularSwaggerView
+
+from insurance import views
+from insurance.views import CarBrandsView
+
+# Inizializza il router
+router = DefaultRouter()
+# Registra la nostra QuoteViewSet sotto il percorso 'quotes'
+router.register(r'quotes', views.QuoteViewSet, basename='quote')
 
 urlpatterns = [
     # URL per l'admin di Django
@@ -34,8 +43,13 @@ urlpatterns = [
 
     # Download del file OpenAPI schema
     path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
-    # Interfaccia Swagger UI:
     path('api/schema/swagger-ui/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
-    # Interfaccia Redoc:
     path('api/schema/redoc/', SpectacularRedocView.as_view(url_name='schema'), name='redoc'),
+
+    # Estendi le URL del router per le quote
+    path('api/', include(router.urls)),
+
+    # Public API
+    path('api/car-brands/', CarBrandsView.as_view(), name='car-brands'),
+
 ]
