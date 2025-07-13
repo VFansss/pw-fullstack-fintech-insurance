@@ -1,7 +1,7 @@
 <!-- src/lib/components/preventivo/Step3Risultato.svelte -->
 <script lang="ts">
     // Questo componente riceve solo il prezzo calcolato come prop.
-    let { prezzo }: { prezzo: number | null } = $props();
+    let { prezzo, isUserLoggedIn }: { prezzo: number | null, isUserLoggedIn: boolean } = $props();
 </script>
 
 <div class="text-center">
@@ -15,9 +15,15 @@
             </p>
         </div>
         <div class="bg-green-50 border-l-4 border-green-400 p-4 rounded-r-lg">
-            <p class="text-green-800">
-                Un ottimo prezzo! Salva il tuo preventivo creando un account. Potrai bloccare il prezzo e gestire tutto comodamente dalla tua area personale.
-            </p>
+            {#if isUserLoggedIn}
+                <p class="text-green-800">
+                    Un ottimo prezzo! Salva questo preventivo nel tuo account. Potrai gestirlo comodamente dalla tua area personale.
+                </p>
+            {:else}
+                <p class="text-green-800">
+                    Un ottimo prezzo! Salva il tuo preventivo creando un account. Potrai gestirlo comodamente dalla tua area personale.
+                </p>
+            {/if}
         </div>
     {:else}
         <!-- Messaggio mostrato in caso di errore nel calcolo -->

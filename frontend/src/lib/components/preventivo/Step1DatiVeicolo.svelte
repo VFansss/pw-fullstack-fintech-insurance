@@ -61,8 +61,8 @@
 			type="text"
 			id="license_plate"
 			bind:value={formData.license_plate}
-			placeholder="AA123BB"
-			class="w-full uppercase px-3 py-2 border border-gray-300 rounded-lg shadow-sm"
+			maxlength="7"
+			class="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm"
 			required
 		/>
 	</div>

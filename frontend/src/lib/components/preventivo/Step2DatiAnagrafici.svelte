@@ -60,11 +60,10 @@
 			type="number"
 			id="license_year"
 			bind:value={formData.license_year}
-			placeholder="Es. 2010"
-			min="1950"
+			min="1920"
 			max={new Date().getFullYear()}
-			class="w-full px-3 py-2 border rounded-lg shadow-sm"
 			required
+			class="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm"
 		/>
 	</div>
 

@@ -104,19 +104,21 @@ DATABASES = {
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
 
+# Disabled for development - allows simple passwords like "123456"
 AUTH_PASSWORD_VALIDATORS = [
-    {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
-    },
+    # Uncomment these in production:
+    # {
+    #     'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+    # },
+    # {
+    #     'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+    # },
+    # {
+    #     'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
+    # },
+    # {
+    #     'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+    # },
 ]
 
 
@@ -187,3 +189,10 @@ ACCOUNT_EMAIL_VERIFICATION = 'none'
 
 # L'email è comunque obbligatoria durante la registrazione
 ACCOUNT_EMAIL_REQUIRED = True
+
+# Disable password validation for development (allows simple passwords)
+# Remove these in production for better security
+ACCOUNT_PASSWORD_MIN_LENGTH = 1
+ACCOUNT_PASSWORD_INPUT_PLACEHOLDER = ""
+# Disable all password validators in allauth
+ACCOUNT_PASSWORD_VALIDATORS = []

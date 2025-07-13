@@ -37,8 +37,36 @@ async function apiFetch(path: string, options: RequestInit = {}) {
         if (!response.ok) {
             // Proviamo a leggere l'errore JSON dal backend
             const errorData = await response.json().catch(() => ({}));
-            // Creiamo un errore più descrittivo
-            throw new Error(errorData.detail || errorData.non_field_errors?.[0] || `HTTP error! status: ${response.status}`);
+            
+            // Gestione migliorata degli errori di validazione
+            let errorMessage = '';
+            
+            if (errorData.detail) {
+                errorMessage = errorData.detail;
+            } else if (errorData.non_field_errors) {
+                errorMessage = errorData.non_field_errors[0];
+            } else if (errorData.password1) {
+                // Errori specifici del campo password1
+                errorMessage = `Password: ${errorData.password1.join(', ')}`;
+            } else if (errorData.password2) {
+                // Errori specifici del campo password2
+                errorMessage = `Conferma Password: ${errorData.password2.join(', ')}`;
+            } else if (errorData.email) {
+                errorMessage = `Email: ${errorData.email.join(', ')}`;
+            } else if (errorData.username) {
+                errorMessage = `Username: ${errorData.username.join(', ')}`;
+            } else {
+                // Fallback per altri errori di campo
+                const firstError = Object.keys(errorData)[0];
+                if (firstError && errorData[firstError]) {
+                    const fieldErrors = Array.isArray(errorData[firstError]) ? errorData[firstError] : [errorData[firstError]];
+                    errorMessage = `${firstError}: ${fieldErrors.join(', ')}`;
+                } else {
+                    errorMessage = `HTTP error! status: ${response.status}`;
+                }
+            }
+            
+            throw new Error(errorMessage);
         }
 
         // Se la risposta è vuota (es. un 204 No Content), restituiamo null
@@ -79,6 +107,8 @@ export interface QuoteData {
     license_plate: string;
     birth_date: string; // Formato "YYYY-MM-DD"
     license_year: number;
+    km_per_year: string; 
+    driving_style: string;
     // Aggiungiamo anche i dati anagrafici, perché nel caso di un utente
     // non loggato, sono obbligatori.
     first_name: string;
@@ -110,12 +140,16 @@ export const auth = {
             body: JSON.stringify(credentials),
         }),
     
-    register: (details: RegistrationDetails) => 
+    register: (details: RegistrationDetails) =>
         apiFetch('/api/auth/registration/', {
             method: 'POST',
-            body: JSON.stringify(details),
+            body: JSON.stringify({
+                username: details.username,
+                email: details.email,
+                password1: details.password,
+                password2: details.password2
+            }),
         }),
-
     getUser: () => apiFetch('/api/auth/user/'),
 
     logout: () => apiFetch('/api/auth/logout/', { method: 'POST' }),
