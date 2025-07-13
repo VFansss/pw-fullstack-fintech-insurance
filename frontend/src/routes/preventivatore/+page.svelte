@@ -2,6 +2,7 @@
 
 <script lang="ts">
 	import { goto } from '$app/navigation';
+	import { base } from '$app/paths';
 
 	const tipiPreventivo = [
 		{
@@ -36,7 +37,7 @@
 	<div class="mt-12 grid grid-cols-1 md:grid-cols-3 gap-8 ">
 		{#each tipiPreventivo as item}
 			<button
-				onclick={() => goto(`/preventivatore/${item.tipo}`)}
+				onclick={() => goto(base+`/preventivatore/${item.tipo}`)}
 				class="cursor-pointer group block text-left p-6 bg-white rounded-xl shadow-lg hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 border border-gray-200"
 			>
 				<div class="text-4xl mb-4">{item.icon}</div>

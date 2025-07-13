@@ -2,6 +2,7 @@
     import Logo from '$lib/assets/logo.svelte';
     import { goto } from '$app/navigation';
     import type { Snippet } from 'svelte';
+    import { base } from '$app/paths';
 
     // Questo componente accetta "children" come una prop di tipo Snippet
     let { children, title = 'AlCoperto' }: { children: Snippet; title?: string } = $props();
@@ -11,7 +12,7 @@
     <!-- Header Minimale -->
     <header class="bg-white border-b">
         <div
-            onclick={() => goto('/')}
+            onclick={() => goto(base+'/')}
             class="container mx-auto px-6 py-4 flex items-center cursor-pointer hover:bg-gray-50 transition-colors duration-200"
         >
             <Logo class="h-8 w-8 text-blue-600" />

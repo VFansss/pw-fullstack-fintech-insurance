@@ -43,7 +43,7 @@
 
 			// Successo! Reindirizziamo l'utente alla dashboard
 			// con un parametro per mostrare un messaggio di conferma.
-			goto('/dashboard?activated=true');
+			goto(base+'/dashboard?activated=true');
 
 		} catch (e: any) {
 			console.error('Errore di attivazione:', e);

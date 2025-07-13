@@ -3,6 +3,7 @@
 	import { goto } from '$app/navigation';
 	import { auth } from '$lib/api';
     import Logo from '$lib/assets/logo.svelte'; // Importiamo il nostro componente Logo
+	import { base } from '$app/paths';
 
 	let username = $state('');
 	let password = $state('');
@@ -14,7 +15,7 @@
         if (token) {
             try {
                 await auth.getUser();
-                goto('/dashboard', { replaceState: true }); 
+                goto(base+'/dashboard', { replaceState: true }); 
             } catch (error) {
                 localStorage.removeItem('authToken');
                 console.log('Token non valido, rimosso.');
@@ -28,7 +29,7 @@
 		try {
 			const result = await auth.login({ username, password });
 			localStorage.setItem('authToken', result.key);
-			goto('/dashboard', { replaceState: true });
+			goto(base+'/dashboard', { replaceState: true });
 		} catch (error: any) {
 			errorMessage = error.message || 'Credenziali non valide.';
 		}
@@ -42,7 +43,7 @@
 		<div class="bg-white p-8 rounded-xl shadow-md">
             <!-- ===== BLOCCO LOGO AGGIUNTO ===== -->
             <div class="flex justify-center mb-6">
-                <button onclick={() => goto('/')} class=" cursor-pointer transition-transform transform hover:scale-110">
+                <button onclick={() => goto(base+'/')} class=" cursor-pointer transition-transform transform hover:scale-110">
                     <Logo class="h-16 w-16 text-blue-600" />
                 </button>
             </div>
@@ -87,7 +88,7 @@
 					Non sei ancora assicurato da noi? Crea prima un preventivo, per accedere alla tua area personale
 				</p>
 				<button
-					onclick={() => goto('/preventivatore')}
+					onclick={() => goto(base+'/preventivatore')}
 					class="cursor-pointer w-full bg-green-600 text-white py-2 rounded-lg hover:bg-green-700 transition-colors font-semibold"
 				>
 					Crea un Preventivo

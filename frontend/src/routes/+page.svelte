@@ -12,9 +12,9 @@
 
 	// === STATO PER L'HERO A ROTAZIONE ===
 	const backgroundImages = [
-		'/hero-bg-1.jpg', // L'immagine delle chiavi
-		'/hero-bg-2.jpg', // L'immagine della famiglia
-		'/hero-bg-3.jpg'  // L'immagine dell'auto
+		base+'/hero-bg-1.jpg', // L'immagine delle chiavi
+		base+'/hero-bg-2.jpg', // L'immagine della famiglia
+		base+'/hero-bg-3.jpg'  // L'immagine dell'auto
 	];
 	let currentBgIndex = $state(0);
 	let intervalId: ReturnType<typeof setInterval>;

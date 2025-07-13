@@ -26,7 +26,7 @@
 	// === LOGICA DI CARICAMENTO ===
 	onMount(async () => {
 		const token = localStorage.getItem('authToken');
-		if (!token) { goto('/login'); return; }
+		if (!token) { goto(base+'/login'); return; }
 
 		try {
             // Ora carichiamo tutto quello che ci serve in un colpo solo!
@@ -45,7 +45,7 @@
 		} catch (e) {
 			localStorage.removeItem('authToken');
 			error = 'Sessione scaduta o errore. Effettua nuovamente il login.';
-			setTimeout(() => goto('/login'), 2500);
+			setTimeout(() => goto(base+'/login'), 2500);
 		} finally {
 			isLoading = false;
 		}
@@ -54,7 +54,7 @@
 	// === AZIONI UTENTE (logout e clear) ===
 	async function handleLogout() {
 		try { await auth.logout(); } catch (e) { console.error("Errore logout:", e); }
-        finally { localStorage.removeItem('authToken'); goto('/login'); }
+        finally { localStorage.removeItem('authToken'); goto(base+'/login'); }
 	}
 
     async function handleClearQuotes() {

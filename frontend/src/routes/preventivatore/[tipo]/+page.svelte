@@ -4,6 +4,7 @@
 	import { page } from '$app/state';
 	import { goto } from '$app/navigation';
 	import { auth, quotes } from '$lib/api';
+	import { base } from '$app/paths';
 
 	import Step1DatiVeicolo from '$lib/components/preventivatore/Step1DatiVeicolo.svelte';
 	import Step2DatiAnagrafici from '$lib/components/preventivatore/Step2DatiAnagrafici.svelte';
@@ -131,7 +132,7 @@
 				vehicle_type: page.params.tipo,
 			});
 			
-			goto('/dashboard');
+			goto(base+'/dashboard');
 
 		} catch (error: any) {
 			// Questa parte ora può catturare errori sia dalla registrazione che dalla creazione
