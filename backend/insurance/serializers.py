@@ -46,6 +46,7 @@ class SimulateQuoteSerializer(serializers.Serializer):
     driving_style = serializers.ChoiceField(choices=Quote.DRIVING_STYLE_CHOICES)
     birth_date = serializers.DateField()
     license_year = serializers.IntegerField()
+    vehicle_type = serializers.ChoiceField(choices=Quote.VEHICLE_TYPE_CHOICES)
 
     class Meta:
         # Questo serializer non ha un modello perché non scrive sul DB

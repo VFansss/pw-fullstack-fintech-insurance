@@ -111,6 +111,7 @@ export interface QuoteData {
     license_year: number;
     km_per_year: string; 
     driving_style: string;
+    vehicle_type: string;
     // Aggiungiamo anche i dati anagrafici, perché nel caso di un utente
     // non loggato, sono obbligatori.
     first_name: string;
@@ -126,6 +127,7 @@ interface SimulateQuoteData {
     driving_style: string;
     birth_date: string;
     license_year: number;
+    vehicle_type: string;
 }
 
 /*

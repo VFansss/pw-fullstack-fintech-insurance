@@ -40,9 +40,23 @@ class QuoteViewSet(viewsets.ModelViewSet):
         # Ricalcoliamo il prezzo anche qui per non fidarci di quello
         # che potrebbe arrivare dal frontend.
         driving_style = serializer.validated_data.get('driving_style')
+        vehicle_type = serializer.validated_data.get('vehicle_type')
+        car_brand = serializer.validated_data.get('car_brand')
+        license_year = serializer.validated_data.get('license_year')
+        
         prezzo_calcolato = 500.00
         if driving_style == 'libera':
             prezzo_calcolato += 150.00
+        if car_brand == 'FERRARI':
+            prezzo_calcolato += 1000.00
+        if (2025 - license_year) < 5:  # Neopatentato fittizio
+            prezzo_calcolato += 200.00
+        
+        # Aggiungiamo logica per il tipo di veicolo
+        if vehicle_type == 'moto':
+            prezzo_calcolato += 100.00  # Le moto hanno un piccolo sovrapprezzo
+        elif vehicle_type == 'autocarro':
+            prezzo_calcolato += 300.00  # Gli autocarri hanno un sovrapprezzo maggiore
         
         # Salviamo il preventivo, associandolo FORZATAMENTE all'utente della richiesta.
         serializer.save(user=self.request.user, premium_price=prezzo_calcolato)
@@ -132,6 +146,12 @@ class SimulateQuoteView(APIView):
                 prezzo_calcolato += 1000.00
             if (2025 - valid_data['license_year']) < 5: # Neopatentato fittizio
                 prezzo_calcolato += 200.00
+            
+            # Aggiungiamo logica per il tipo di veicolo
+            if valid_data['vehicle_type'] == 'moto':
+                prezzo_calcolato += 100.00  # Le moto hanno un piccolo sovrapprezzo
+            elif valid_data['vehicle_type'] == 'autocarro':
+                prezzo_calcolato += 300.00  # Gli autocarri hanno un sovrapprezzo maggiore
             # -----------------------------------------------
 
             return Response({'premium_price': prezzo_calcolato})
@@ -167,11 +187,9 @@ class PolicyStatsView(APIView):
         ).values(
             'quote__vehicle_type'
         ).annotate(
-            # --- MODIFICA QUESTA RIGA ---
             # Invece di contare l'ID generico, contiamo le occorrenze
             # del campo per cui stiamo raggruppando. È più robusto.
             count=Count('quote__vehicle_type') 
-            # --- FINE MODIFICA ---
         ).order_by('quote__vehicle_type')
         
         return Response(stats)

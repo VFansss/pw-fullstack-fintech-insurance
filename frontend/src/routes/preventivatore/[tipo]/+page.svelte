@@ -76,6 +76,7 @@
 				driving_style: formData.driving_style,
 				birth_date: formData.birth_date,
 				license_year: parseInt(formData.license_year) || 0,
+				vehicle_type: page.params.tipo,
 			});
 			calculatedPrice = result.premium_price;
 			currentStep = 3;
@@ -127,6 +128,7 @@
 				first_name: formData.first_name,
 				last_name: formData.last_name,
 				email: formData.email,
+				vehicle_type: page.params.tipo,
 			});
 			
 			goto('/dashboard');
