@@ -29,7 +29,7 @@ class QuoteViewSet(viewsets.ModelViewSet):
         # i preventivi che hanno una polizza collegata.
         return Quote.objects.filter(
             Q(user=user) | Q(email=user.email),
-            policy__isnull=True  # Questa riga è la magia!
+            policy__isnull=True
         )
 
     def perform_create(self, serializer):

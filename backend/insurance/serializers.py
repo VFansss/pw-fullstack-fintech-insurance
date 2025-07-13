@@ -51,7 +51,19 @@ class SimulateQuoteSerializer(serializers.Serializer):
         # Questo serializer non ha un modello perché non scrive sul DB
         pass
 
+class NestedQuoteSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Quote
+        # Specifichiamo ESATTAMENTE i campi che vogliamo vedere.
+        fields = ['car_brand', 'car_model', 'license_plate', 'vehicle_type']
+
 class PolicySerializer(serializers.ModelSerializer):
+    # Diciamo a DRF di usare il nostro nuovo
+    # serializer "leggero" per rappresentare il campo 'quote'.
+    # `read_only=True` assicura che questo campo sia solo per la lettura.
+    quote = NestedQuoteSerializer(read_only=True)
+
     class Meta:
         model = Policy
-        fields = '__all__'
+        fields = '__all__' # Mostriamo tutti i campi della polizza, più il 'quote' annidato.
+

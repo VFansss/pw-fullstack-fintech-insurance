@@ -132,3 +132,11 @@
 		{/if}
 	</div>
 </div>
+
+<style lang="postcss">
+	/* Selezioniamo tutti gli elementi <button> in questo componente */
+	button {
+		/* Usiamo @apply per "iniettare" le utility class di Tailwind */
+		@apply cursor-pointer;
+	}
+</style>

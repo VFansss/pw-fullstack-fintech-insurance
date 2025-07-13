@@ -90,13 +90,14 @@
 
                     <!-- SEZIONE POLIZZE ATTIVE -->
                     <div class="bg-white p-6 rounded-xl shadow-lg">
-                        <h2 class="text-2xl font-semibold text-gray-800 mb-4">Le Tue Polizze Attive</h2>
+                        <h2 class="text-2xl font-semibold text-gray-800 mb-4">Le tue polizze attive</h2>
                         {#if userPolicies.length > 0}
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 {#each userPolicies as policy (policy.id)}
                                     <div class="bg-gray-50 border border-gray-200 rounded-lg p-5 flex flex-col justify-between">
                                         <div>
                                             <div class="flex items-center mb-3">
+                                                <!-- ORA POSSIAMO USARE I DATI ANNIDATI! -->
                                                 <span class="text-4xl mr-4">{ICONS[policy.quote.vehicle_type] || '📄'}</span>
                                                 <div>
                                                     <h3 class="font-bold text-lg text-gray-800">{policy.quote.car_brand} {policy.quote.car_model}</h3>
@@ -110,16 +111,15 @@
                                             </ul>
                                         </div>
                                         <div class="text-center mt-4 pt-4 border-t">
-                                             <span class="px-3 py-1 text-xs font-bold uppercase tracking-wider
-                                                {policy.payment_status === 'paid' ? 'bg-green-200 text-green-800' : 'bg-yellow-200 text-yellow-800'} rounded-full">
-                                                {policy.payment_status === 'paid' ? 'Pagata' : 'In attesa'}
+                                             <span class="px-3 py-1 text-xs font-bold uppercase tracking-wider bg-green-200 text-green-800 rounded-full">
+                                                PAGATA
                                              </span>
                                         </div>
                                     </div>
                                 {/each}
                             </div>
                         {:else}
-                            <p class="text-center text-gray-500 py-4">Nessuna polizza attiva. Trasforma un preventivo in una polizza per vederla qui!</p>
+                            <p class="text-center text-gray-500 py-4">Nessuna polizza attiva.</p>
                         {/if}
                     </div>
 
