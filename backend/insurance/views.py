@@ -228,3 +228,15 @@ class CreatePolicyFromQuoteView(APIView):
 
         serializer = PolicySerializer(new_policy)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
+    
+
+class GlobalStatsView(APIView):
+    """
+    Restituisce statistiche globali, non legate a un singolo utente.
+    Endpoint pubblico.
+    """
+    permission_classes = [permissions.AllowAny] # Chiunque può vederlo
+
+    def get(self, request, format=None):
+        total_policies_count = Policy.objects.count()
+        return Response({'total_policies': total_policies_count})

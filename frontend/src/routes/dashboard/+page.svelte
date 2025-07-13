@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { goto } from '$app/navigation';
-	import { auth, quotes, policies } from '$lib/api';
+	import { auth, quotes, policies, general } from '$lib/api';
     import PolicyChart from '$lib/components/PolicyChart.svelte';
 
 	// === STATO DEL COMPONENTE ===
@@ -9,6 +9,7 @@
 	let userQuotes = $state<any[]>([]);
 	let userPolicies = $state<any[]>([]);
 	let policyStats = $state<any[]>([]);
+    let globalStats = $state({ total_policies: 0 });
 	
 	let isLoading = $state(true);
 	let isClearing = $state(false);
@@ -28,16 +29,18 @@
 
 		try {
             // Ora carichiamo tutto quello che ci serve in un colpo solo!
-			const [userData, quotesData, policiesData, statsData] = await Promise.all([
+			const [userData, quotesData, policiesData, statsData, globalStatsData] = await Promise.all([
 				auth.getUser(),
 				quotes.getAll(),
 				policies.getAll(),
-				policies.getStats()
+				policies.getStats(),
+                general.getGlobalStats()
 			]);
 			user = userData;
 			userQuotes = quotesData;
 			userPolicies = policiesData;
 			policyStats = statsData;
+            globalStats = globalStatsData;
 		} catch (e) {
 			localStorage.removeItem('authToken');
 			error = 'Sessione scaduta o errore. Effettua nuovamente il login.';
@@ -76,6 +79,23 @@
             {/if}
         </div>
     </header>
+
+    {#if !isLoading && !error}
+    <section 
+        class="bg-cover bg-center py-12 text-white relative"
+        style="background-image: url('/mk-banner.jpg');"
+    >
+        <!-- Overlay per leggibilità -->
+        <div class="absolute inset-0 bg-black opacity-50"></div>
+
+        <div class="container mx-auto text-center relative">
+            <h2 class="text-4xl font-extrabold tracking-tight">
+                Altri <span class="text-yellow-300">{globalStats.total_policies}</span> veicoli sono sotto la nostra protezione e la nostra cura.
+            </h2>
+            <p class="mt-2 text-lg font-light">Grazie a tutti per la vostra fiducia!</p>
+        </div>
+    </section>
+    {/if}
 
     <main class="container mx-auto p-4 md:p-8">
         {#if isLoading}

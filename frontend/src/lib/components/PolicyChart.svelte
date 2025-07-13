@@ -48,7 +48,7 @@
                     },
                     title: {
                         display: true,
-                        text: 'Ripartizione Polizze Attive'
+                        text: 'Le tue polizze attive'
                     }
                 }
             }

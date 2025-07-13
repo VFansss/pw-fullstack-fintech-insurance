@@ -23,7 +23,7 @@ from rest_framework.routers import DefaultRouter
 from drf_spectacular.views import SpectacularAPIView, SpectacularRedocView, SpectacularSwaggerView
 
 from insurance import views
-from insurance.views import CreatePolicyFromQuoteView, PolicyStatsView, VehicleDataView, SimulateQuoteView
+from insurance.views import CreatePolicyFromQuoteView, PolicyStatsView, VehicleDataView, SimulateQuoteView, GlobalStatsView 
 
 # Inizializza il router
 router = DefaultRouter()
@@ -53,6 +53,7 @@ urlpatterns = [
     path('api/policies/create-from-quote/', CreatePolicyFromQuoteView.as_view(), name='policy-create-from-quote'),
 
     # Public API
+    path('api/stats/global/', GlobalStatsView.as_view(), name='global-stats'),
     path('api/vehicle-data/<str:vehicle_type>/<str:data_type>/', VehicleDataView.as_view(), name='vehicle-data'),
 
     # Estendi le URL del router per le quote

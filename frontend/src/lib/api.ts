@@ -206,6 +206,8 @@ export const quotes = {
 export const general = {
     getVehicleBrands: (vehicleType: string): Promise<string[]> => 
         apiFetch(`/api/vehicle-data/${vehicleType}/brands/`),
+
+    getGlobalStats: () => apiFetch('/api/stats/global/'),
 };
 
 export const policies = {
