@@ -5,6 +5,10 @@ on:
     branches:
       - master  # o 'master', a seconda del nome del tuo branch principale
 
+permissions:
+  id-token: write
+  contents: read
+
 jobs:
   build_site:
     runs-on: ubuntu-latest
