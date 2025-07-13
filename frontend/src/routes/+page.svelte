@@ -36,9 +36,9 @@
 
 	// === DATI PER LE CARD ===
 	const features = [
-		{ title: 'Assicurazione Auto', description: 'Acquista o rinnova la polizza per viaggiare in sicurezza.', link: '/preventivatore/auto', icon: '🚗' },
-		{ title: 'Assicurazione Moto', description: 'Scegli una polizza personalizzabile e sospendila gratis quando vuoi.', link: '/preventivatore/moto', icon: '🏍️' },
-		{ title: 'Assicurazione Autocarro', description: 'Soluzioni complete per proteggere il tuo veicolo commerciale.', link: '/preventivatore/autocarro', icon: '🚚' },
+		{ title: 'Assicurazione Auto', description: 'Acquista o rinnova la polizza per viaggiare in sicurezza.', link: base+'/preventivatore/auto', icon: '🚗' },
+		{ title: 'Assicurazione Moto', description: 'Scegli una polizza personalizzabile e sospendila gratis quando vuoi.', link: base+'/preventivatore/moto', icon: '🏍️' },
+		{ title: 'Assicurazione Autocarro', description: 'Soluzioni complete per proteggere il tuo veicolo commerciale.', link: base+'/preventivatore/autocarro', icon: '🚚' },
 	];
 </script>
 
