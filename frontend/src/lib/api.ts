@@ -99,6 +99,8 @@ interface RegistrationDetails {
     email: string;
     password: string;
     password2: string;
+    first_name: string;
+    last_name: string;
 }
 
 export interface QuoteData {
@@ -147,7 +149,9 @@ export const auth = {
                 username: details.username,
                 email: details.email,
                 password1: details.password,
-                password2: details.password2
+                password2: details.password2,
+                first_name: details.first_name,
+                last_name: details.last_name,
             }),
         }),
     getUser: () => apiFetch('/api/auth/user/'),

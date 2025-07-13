@@ -5,12 +5,28 @@ from .models import Quote
 from rest_framework import serializers
 
 # Questa classe personalizzata eredita dal serializzatore di registrazione
-# e aggiunge un campo "finto" che allauth si aspetta.
+# e aggiunge i campi first_name e last_name
 class CustomRegisterSerializer(RegisterSerializer):
-    
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self._has_phone_field = False  # oppure True se hai un campo phone
+        
+    first_name = serializers.CharField(max_length=30, required=True)
+    last_name = serializers.CharField(max_length=30, required=True)
+    
+    def get_cleaned_data(self):
+        data = super().get_cleaned_data()
+        data['first_name'] = self.validated_data.get('first_name', '')
+        data['last_name'] = self.validated_data.get('last_name', '')
+        return data
+    
+    def save(self, request):
+        user = super().save(request)
+        user.first_name = self.cleaned_data.get('first_name')
+        user.last_name = self.cleaned_data.get('last_name')
+        user.save()
+        return user
 
 class QuoteSerializer(serializers.ModelSerializer):
     class Meta:
