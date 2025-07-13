@@ -15,8 +15,22 @@ class CustomRegisterSerializer(RegisterSerializer):
 class QuoteSerializer(serializers.ModelSerializer):
     class Meta:
         model = Quote
-        # Elenchiamo tutti i campi del nostro modello Quote
-        fields = '__all__' 
-        # Diciamo a DRF che alcuni campi sono calcolati dal server
-        # e non devono essere forniti dal client durante la creazione.
+        fields = '__all__'
         read_only_fields = ['premium_price', 'user', 'created_at']
+
+class SimulateQuoteSerializer(serializers.Serializer):
+    """
+    Valida i dati in input per la simulazione del preventivo.
+    Non è legato a un modello, valida solo i dati.
+    """
+    car_brand = serializers.CharField(max_length=50)
+    car_model = serializers.CharField(max_length=50)
+    license_plate = serializers.CharField(max_length=10)
+    km_per_year = serializers.CharField(max_length=20)
+    driving_style = serializers.ChoiceField(choices=Quote.DRIVING_STYLE_CHOICES)
+    birth_date = serializers.DateField()
+    license_year = serializers.IntegerField()
+
+    class Meta:
+        # Questo serializer non ha un modello perché non scrive sul DB
+        pass

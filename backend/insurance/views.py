@@ -5,46 +5,36 @@ from rest_framework import viewsets, permissions
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from .models import Quote
-from .serializers import QuoteSerializer
+from .serializers import QuoteSerializer, SimulateQuoteSerializer
 
 class QuoteViewSet(viewsets.ModelViewSet):
-    """
-    API endpoint che permette la creazione e la visualizzazione dei preventivi.
-    """
     serializer_class = QuoteSerializer
-
-    def get_permissions(self):
-        """
-        Permette a chiunque (anche anonimi) di creare un preventivo (azione 'create').
-        Richiede l'autenticazione per tutte le altre azioni (es. vedere la lista).
-        """
-        if self.action == 'create':
-            return [permissions.AllowAny()]
-        return super().get_permissions()
+    # Questo endpoint ora è COMPLETAMENTE privato.
+    permission_classes = [permissions.IsAuthenticated]
 
     def get_queryset(self):
         """
-        Un utente autenticato può vedere solo i propri preventivi
-        (quelli associati al suo user ID o alla sua email).
+        Un utente può vedere solo i propri preventivi.
         """
+        # La logica rimane la stessa: uniamo preventivi associati
+        # all'ID utente o alla sua email (per recuperare quelli "orfani").
         user = self.request.user
-        if user.is_authenticated:
-            return Quote.objects.filter(Q(user=user) | Q(email=user.email))
-        return Quote.objects.none()
+        return Quote.objects.filter(Q(user=user) | Q(email=user.email))
 
     def perform_create(self, serializer):
         """
-        Logica custom eseguita al momento della creazione di un nuovo preventivo.
+        Salva un preventivo associandolo all'utente loggato.
+        Il prezzo viene ricalcolato per sicurezza.
         """
-        # Il nostro super-algoritmo di calcolo del premio!
-        prezzo_calcolato = 500.00 
-
-        # Se l'utente che fa la richiesta è autenticato, lo associamo al preventivo.
-        if self.request.user.is_authenticated:
-            serializer.save(premium_price=prezzo_calcolato, user=self.request.user)
-        else:
-            # Altrimenti, salviamo il preventivo senza utente associato.
-            serializer.save(premium_price=prezzo_calcolato)
+        # Ricalcoliamo il prezzo anche qui per non fidarci di quello
+        # che potrebbe arrivare dal frontend.
+        driving_style = serializer.validated_data.get('driving_style')
+        prezzo_calcolato = 500.00
+        if driving_style == 'libera':
+            prezzo_calcolato += 150.00
+        
+        # Salviamo il preventivo, associandolo FORZATAMENTE all'utente della richiesta.
+        serializer.save(user=self.request.user, premium_price=prezzo_calcolato)
 
 BRANDS_DATA = {
     'auto': [
@@ -91,3 +81,31 @@ class VehicleDataView(APIView):
         
         # In futuro, potremmo avere altri tipi di dati, es. /models/
         return Response({"error": f"Tipo di dati '{data_type}' non supportato."}, status=400)
+    
+
+class SimulateQuoteView(APIView):
+
+    permission_classes = [permissions.AllowAny]
+
+    def post(self, request, format=None):
+        # Validiamo i dati in input con il nostro nuovo serializer
+        serializer = SimulateQuoteSerializer(data=request.data)
+        if serializer.is_valid():
+            # Se i dati sono validi, li usiamo per il calcolo
+            valid_data = serializer.validated_data
+            
+            # --- IL NOSTRO ALGORITMO ORA USA DATI VALIDATI ---
+            prezzo_calcolato = 500.00
+            
+            if valid_data['driving_style'] == 'libera':
+                prezzo_calcolato += 150.00
+            if valid_data['car_brand'] == 'FERRARI':
+                prezzo_calcolato += 1000.00
+            if (2025 - valid_data['license_year']) < 5: # Neopatentato fittizio
+                prezzo_calcolato += 200.00
+            # -----------------------------------------------
+
+            return Response({'premium_price': prezzo_calcolato})
+        
+        # Se i dati non sono validi, DRF restituisce un errore 400 con i dettagli
+        return Response(serializer.errors, status=400)
