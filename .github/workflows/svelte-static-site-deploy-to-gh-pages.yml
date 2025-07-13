@@ -5,10 +5,6 @@ on:
     branches:
       - master  # o 'master', a seconda del nome del tuo branch principale
 
-permissions:
-  id-token: write
-  contents: read
-
 jobs:
   build_site:
     runs-on: ubuntu-latest
@@ -51,6 +47,11 @@ jobs:
   deploy:
     needs: build_site
     runs-on: ubuntu-latest
+
+    permissions:
+      pages: write
+      id-token: write
+
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
