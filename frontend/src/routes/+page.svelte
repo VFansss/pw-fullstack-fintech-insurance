@@ -67,7 +67,7 @@
 					{/if}
 				</div>
 				<a href={base+"/login"} class="px-4 py-2 text-gray-800 font-semibold rounded-lg hover:bg-gray-100">Area Personale</a>
-				<button onclick={() => goto('/preventivatore/auto')} class="px-5 py-2 bg-blue-600 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 transition-colors">Fai un preventivo</button>
+				<button onclick={() => goto(base+'/preventivatore/auto')} class="px-5 py-2 bg-blue-600 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 transition-colors">Fai un preventivo</button>
 			</div>
 			
 			<!-- Mobile Menu Button -->
@@ -106,7 +106,7 @@
 					
 					<!-- CTA Button -->
 					<button 
-						onclick={() => { goto('/preventivatore/auto'); isMobileMenuOpen = false; }}
+						onclick={() => { goto(base+'/preventivatore/auto'); isMobileMenuOpen = false; }}
 						class="w-full mt-4 px-5 py-3 bg-blue-600 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 transition-colors"
 					>
 						Fai un preventivo
@@ -143,7 +143,7 @@
 			</p>
 			<div class="mt-10">
 				<button 
-					onclick={() => goto('/preventivatore/auto')} 
+					onclick={() => goto(base+'/preventivatore/auto')} 
 					class="px-10 py-4 bg-blue-600 text-white font-bold rounded-full text-xl hover:bg-blue-700 transition-transform transform hover:scale-105 shadow-2xl"
 				>
 					Calcola Preventivo
