@@ -5,7 +5,7 @@ from rest_framework import viewsets, permissions
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from .models import Quote
-from .serializers import QuoteSerializer, SimulateQuoteSerializer
+from .serializers import QuoteSerializer, SimulateQuoteSerializer, PolicySerializer
 
 class QuoteViewSet(viewsets.ModelViewSet):
     serializer_class = QuoteSerializer
@@ -109,3 +109,15 @@ class SimulateQuoteView(APIView):
         
         # Se i dati non sono validi, DRF restituisce un errore 400 con i dettagli
         return Response(serializer.errors, status=400)
+    
+class PolicyViewSet(viewsets.ReadOnlyModelViewSet):
+    """
+    Endpoint di sola lettura per le polizze.
+    Un utente può vedere solo le proprie polizze.
+    Le polizze vengono create tramite un'azione separata (es. 'pagamento').
+    """
+    serializer_class = PolicySerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_queryset(self):
+        return Policy.objects.filter(user=self.request.user)

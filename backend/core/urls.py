@@ -27,8 +27,9 @@ from insurance.views import VehicleDataView, SimulateQuoteView
 
 # Inizializza il router
 router = DefaultRouter()
-# Registra la nostra QuoteViewSet sotto il percorso 'quotes'
+
 router.register(r'quotes', views.QuoteViewSet, basename='quote')
+router.register(r'policies', views.PolicyViewSet, basename='policy')
 
 urlpatterns = [
     # URL per l'admin di Django

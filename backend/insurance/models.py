@@ -35,3 +35,40 @@ class Quote(models.Model):
         if self.user:
             return f"Preventivo per {self.user.get_full_name()} - €{self.premium_price}"
         return f"Preventivo per {self.first_name} {self.last_name} - €{self.premium_price}"
+    
+class Policy(models.Model):
+    # Riferimento obbligatorio all'utente che possiede la polizza.
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    
+    # Riferimento 1-a-1 al preventivo da cui è nata questa polizza.
+    # Quando un preventivo diventa una polizza, non può essere riutilizzato.
+    quote = models.OneToOneField(Quote, on_delete=models.CASCADE)
+
+    # Stato della polizza per tracciarne il ciclo di vita.
+    STATUS_CHOICES = [
+        ('active', 'Attiva'),
+        ('expired', 'Scaduta'),
+        ('cancelled', 'Annullata'),
+    ]
+    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='active')
+    
+    # Date di validità della polizza.
+    start_date = models.DateField()
+    end_date = models.DateField()
+    
+    # Stato del pagamento.
+    PAYMENT_STATUS_CHOICES = [
+        ('unpaid', 'Non Pagata'),
+        ('paid', 'Pagata'),
+        ('failed', 'Fallita'),
+    ]
+    payment_status = models.CharField(max_length=20, choices=PAYMENT_STATUS_CHOICES, default='unpaid')
+
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name = "Policy"
+        verbose_name_plural = "Policies"
+
+    def __str__(self):
+        return f"Polizza #{self.id} per {self.user.username} - Scadenza: {self.end_date}"

@@ -200,9 +200,15 @@ export const general = {
         apiFetch(`/api/vehicle-data/${vehicleType}/brands/`),
 };
 
-// Esportiamo anche le funzioni per le altre parti dell'API
 export const policies = {
-    // Esempio:
-    // getAll: () => apiFetch('/api/policies/'),
-    // getById: (id: number) => apiFetch(`/api/policies/${id}/`),
+    /**
+     * Ottiene la lista delle polizze per l'utente attualmente autenticato.
+     * Richiede un token valido.
+     */
+    getAll: () => apiFetch('/api/policies/'),
+
+    /**
+     * Ottiene i dettagli di una singola polizza.
+     */
+    getById: (id: number) => apiFetch(`/api/policies/${id}/`),
 };

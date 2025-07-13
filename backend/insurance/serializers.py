@@ -1,7 +1,7 @@
 # backend/insurance/serializers.py
 
 from dj_rest_auth.registration.serializers import RegisterSerializer
-from .models import Quote
+from .models import Quote, Policy
 from rest_framework import serializers
 
 # Questa classe personalizzata eredita dal serializzatore di registrazione
@@ -50,3 +50,8 @@ class SimulateQuoteSerializer(serializers.Serializer):
     class Meta:
         # Questo serializer non ha un modello perché non scrive sul DB
         pass
+
+class PolicySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Policy
+        fields = '__all__'
