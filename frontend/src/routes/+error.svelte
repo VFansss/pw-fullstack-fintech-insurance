@@ -1,5 +1,8 @@
 <script context="module" lang="ts">
   export const prerender = true;
+
+  import { base } from '$app/paths';
+
 </script>
 
 <svelte:head>
@@ -27,7 +30,7 @@
   <br /><br />
 
   <div>
-    <a href="/">Return Home</a> |
+    <a href={base+"/"}>Return Home</a> |
     <a href="https://en.wikipedia.org/wiki/Special:Random">Learn Something New</a> |
     <a href="https://www.youtube.com">Watch YouTube</a>
   </div>
