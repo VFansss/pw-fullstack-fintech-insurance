@@ -1,4 +1,4 @@
-<!-- src/lib/components/preventivo/Step1DatiVeicolo.svelte -->
+<!-- src/lib/components/preventivatore/Step1DatiVeicolo.svelte -->
 <script lang="ts">
 	type FormData = {
 		car_brand: string;

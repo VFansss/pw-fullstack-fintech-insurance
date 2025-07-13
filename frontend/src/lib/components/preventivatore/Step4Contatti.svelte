@@ -1,4 +1,4 @@
-<!-- src/lib/components/preventivo/Step4Contatti.svelte -->
+<!-- src/lib/components/preventivatore/Step4Contatti.svelte -->
 <script lang="ts">
     // Definiamo la forma dei dati di questo step
     type FormData = {

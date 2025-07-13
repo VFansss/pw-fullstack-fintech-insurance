@@ -19,7 +19,7 @@
 					Area Personale
 				</button>
 				<button
-					onclick={() => goto('/preventivo')}
+					onclick={() => goto('/preventivatore')}
 					class="cursor-pointer ml-2 px-4 py-2 bg-blue-600 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 transition-colors"
 				>
 					Fai un preventivo
@@ -40,7 +40,7 @@
 			</p>
 			<div class="mt-8 flex justify-center space-x-4">
 				<button
-					onclick={() => goto('/preventivo')}
+					onclick={() => goto('/preventivatore')}
 					class="px-8 py-3 bg-red-600 text-white font-bold rounded-full text-lg hover:bg-red-700 transition-transform transform hover:scale-105"
 				>
 					Assicurati con noi!

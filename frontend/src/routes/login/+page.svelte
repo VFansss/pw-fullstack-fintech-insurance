@@ -87,7 +87,7 @@
 					Non sei ancora assicurato da noi? Crea prima un preventivo, per accedere alla tua area personale
 				</p>
 				<button
-					onclick={() => goto('/preventivo')}
+					onclick={() => goto('/preventivatore')}
 					class="cursor-pointer w-full bg-green-600 text-white py-2 rounded-lg hover:bg-green-700 transition-colors font-semibold"
 				>
 					Crea un Preventivo

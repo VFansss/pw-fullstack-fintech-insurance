@@ -1,10 +1,13 @@
 # backend/insurance/views.py
 
+from itertools import count
 from django.db.models import Q
 from rest_framework import viewsets, permissions
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from .models import Quote
+from rest_framework import status
+from datetime import date, timedelta
+from .models import Policy, Quote
 from .serializers import QuoteSerializer, SimulateQuoteSerializer, PolicySerializer
 
 class QuoteViewSet(viewsets.ModelViewSet):
@@ -121,3 +124,61 @@ class PolicyViewSet(viewsets.ReadOnlyModelViewSet):
 
     def get_queryset(self):
         return Policy.objects.filter(user=self.request.user)
+    
+class PolicyStatsView(APIView):
+    """
+    Restituisce statistiche aggregate sulle polizze di un utente.
+    """
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get(self, request, format=None):
+        """
+        Calcola il numero di polizze attive per tipo di veicolo.
+        """
+        stats = Policy.objects.filter(
+            user=request.user, 
+            status='active'
+        ).values(
+            'quote__vehicle_type' # Raggruppa per il tipo di veicolo del preventivo associato
+        ).annotate(
+            count=count('id') # Conta le polizze in ogni gruppo
+        ).order_by('quote__vehicle_type')
+        
+        # Il risultato sarà qualcosa come: 
+        # [{'quote__vehicle_type': 'auto', 'count': 5}, {'quote__vehicle_type': 'moto', 'count': 2}]
+        return Response(stats)
+
+
+class CreatePolicyFromQuoteView(APIView):
+    """
+    Crea una nuova polizza a partire da un preventivo esistente.
+    Simula il completamento di un pagamento.
+    """
+    permission_classes = [permissions.IsAuthenticated]
+
+    def post(self, request, format=None):
+        quote_id = request.data.get('quote_id')
+        if not quote_id:
+            return Response({'error': 'quote_id mancante'}, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            quote = Quote.objects.get(id=quote_id, user=request.user)
+        except Quote.DoesNotExist:
+            return Response({'error': 'Preventivo non trovato o non autorizzato'}, status=status.HTTP_404_NOT_FOUND)
+
+        # Controlla se esiste già una polizza per questo preventivo
+        if Policy.objects.filter(quote=quote).exists():
+            return Response({'error': 'Questo preventivo è già stato convertito in polizza'}, status=status.HTTP_409_CONFLICT)
+
+        # Crea la polizza
+        new_policy = Policy.objects.create(
+            user=request.user,
+            quote=quote,
+            start_date=date.today(),
+            end_date=date.today() + timedelta(days=365),
+            status='active',
+            payment_status='paid' # Il pagamento è andato a buon fine!
+        )
+
+        serializer = PolicySerializer(new_policy)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)

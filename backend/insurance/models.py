@@ -8,7 +8,7 @@ class Quote(models.Model):
     first_name = models.CharField(max_length=100, null=True, blank=True)
     last_name = models.CharField(max_length=100, null=True, blank=True)
     email = models.EmailField(null=True, blank=True)
-    
+
     # Dati Veicolo
     car_brand = models.CharField(max_length=50)
     car_model = models.CharField(max_length=50)
@@ -26,6 +26,14 @@ class Quote(models.Model):
     # Dati Anagrafici
     birth_date = models.DateField()
     license_year = models.IntegerField()
+
+    VEHICLE_TYPE_CHOICES = [
+        ('auto', 'Auto'),
+        ('moto', 'Moto'),
+        ('autocarro', 'Autocarro'),
+    ]
+
+    vehicle_type = models.CharField(max_length=10, choices=VEHICLE_TYPE_CHOICES, default='auto')
 
     # Risultato
     premium_price = models.DecimalField(max_digits=10, decimal_places=2)

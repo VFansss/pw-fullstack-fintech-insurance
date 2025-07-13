@@ -1,4 +1,4 @@
-<!-- src/lib/components/preventivo/Step3Risultato.svelte -->
+<!-- src/lib/components/preventivatore/Step3Risultato.svelte -->
 <script lang="ts">
     // Questo componente riceve solo il prezzo calcolato come prop.
     let { prezzo, isUserLoggedIn }: { prezzo: number | null, isUserLoggedIn: boolean } = $props();

@@ -5,10 +5,10 @@
 	import { goto } from '$app/navigation';
 	import { auth, quotes } from '$lib/api';
 
-	import Step1DatiVeicolo from '$lib/components/preventivo/Step1DatiVeicolo.svelte';
-	import Step2DatiAnagrafici from '$lib/components/preventivo/Step2DatiAnagrafici.svelte';
-	import Step3Risultato from '$lib/components/preventivo/Step3Risultato.svelte';
-	import Step4Contatti from '$lib/components/preventivo/Step4Contatti.svelte';
+	import Step1DatiVeicolo from '$lib/components/preventivatore/Step1DatiVeicolo.svelte';
+	import Step2DatiAnagrafici from '$lib/components/preventivatore/Step2DatiAnagrafici.svelte';
+	import Step3Risultato from '$lib/components/preventivatore/Step3Risultato.svelte';
+	import Step4Contatti from '$lib/components/preventivatore/Step4Contatti.svelte';
 
 	let { data } = $props();
 

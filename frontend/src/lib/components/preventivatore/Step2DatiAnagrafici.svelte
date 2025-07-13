@@ -1,4 +1,4 @@
-<!-- src/lib/components/preventivo/Step2DatiAnagrafici.svelte -->
+<!-- src/lib/components/preventivatore/Step2DatiAnagrafici.svelte -->
 <script lang="ts">
 	type FormData = {
 		first_name: string;

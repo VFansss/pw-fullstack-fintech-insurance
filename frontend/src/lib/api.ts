@@ -201,14 +201,12 @@ export const general = {
 };
 
 export const policies = {
-    /**
-     * Ottiene la lista delle polizze per l'utente attualmente autenticato.
-     * Richiede un token valido.
-     */
     getAll: () => apiFetch('/api/policies/'),
-
-    /**
-     * Ottiene i dettagli di una singola polizza.
-     */
     getById: (id: number) => apiFetch(`/api/policies/${id}/`),
+    getStats: () => apiFetch('/api/policies/stats/'),
+    createFromQuote: (quoteId: number) => 
+        apiFetch('/api/policies/create-from-quote/', {
+            method: 'POST',
+            body: JSON.stringify({ quote_id: quoteId }),
+        }),
 };

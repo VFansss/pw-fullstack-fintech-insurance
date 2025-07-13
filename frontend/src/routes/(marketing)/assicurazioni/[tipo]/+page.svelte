@@ -1,4 +1,4 @@
-<!-- frontend/src/routes/preventivo/[tipo]/+page.svelte -->
+<!-- frontend/src/routes/preventivatore/[tipo]/+page.svelte -->
 <script lang="ts">
 
     import { page } from '$app/state';
