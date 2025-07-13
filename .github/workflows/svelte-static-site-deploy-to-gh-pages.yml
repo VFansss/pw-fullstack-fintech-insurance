@@ -1,57 +1,55 @@
-name: Svelte static site deploy to GitHub Pages
+name: Deploy Svelte Static Site to GitHub Pages
 
 on:
   push:
-    # WATCH OUT FOR THIS!!! CHANGE TO 'main' if needed
-    branches: 'master'
+    branches:
+      - main  # o 'master', a seconda del nome del tuo branch principale
 
 jobs:
   build_site:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      - name: Checkout repository
         uses: actions/checkout@v4
 
-      # If you're using pnpm, add this step then change the commands and cache key below to use `pnpm`
-      # - name: Install pnpm
-      #   uses: pnpm/action-setup@v3
-      #   with:
-      #     version: 8
-
-      - name: Install Node.js
+      - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-           node-version: 20
-           cache: npm
+          node-version: 20
+          cache: 'npm'
+          # Specifichiamo dove si trova il package-lock.json per la cache
+          cache-dependency-path: frontend/package-lock.json
 
       - name: Install dependencies
         run: npm install
+        # <<< LA PRIMA MODIFICA CHIAVE >>>
+        # Esegui questo comando DENTRO la cartella /frontend
+        working-directory: ./frontend
 
-      - name: build
+      - name: Build static site
+        # Passiamo la variabile d'ambiente per il base path
         env:
-           BASE_PATH: '/${{ github.event.repository.name }}'
-        run: |
-           npm run build
+          BASE_PATH: '/${{ github.event.repository.name }}'
+        run: npm run build
+        # <<< LA SECONDA MODIFICA CHIAVE >>>
+        # Esegui anche la build DENTRO /frontend
+        working-directory: ./frontend
 
-      - name: Upload Artifacts
+      - name: Upload production-ready build files
         uses: actions/upload-pages-artifact@v3
         with:
-           # this should match the `pages` option in your adapter-static options
-           path: 'build/'
+          # <<< LA TERZA MODIFICA CHIAVE >>>
+          # Il percorso dell'artefatto è ora relativo alla root,
+          # quindi puntiamo a `frontend/build`
+          path: 'frontend/build/'
 
   deploy:
     needs: build_site
     runs-on: ubuntu-latest
-
-    permissions:
-      pages: write
-      id-token: write
-
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
-
     steps:
-      - name: Deploy
+      - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
