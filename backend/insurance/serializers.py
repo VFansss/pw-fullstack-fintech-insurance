@@ -55,7 +55,7 @@ class NestedQuoteSerializer(serializers.ModelSerializer):
     class Meta:
         model = Quote
         # Specifichiamo ESATTAMENTE i campi che vogliamo vedere.
-        fields = ['car_brand', 'car_model', 'license_plate', 'vehicle_type']
+        fields = ['car_brand', 'car_model', 'license_plate', 'vehicle_type','driving_style', 'premium_price']
 
 class PolicySerializer(serializers.ModelSerializer):
     # Diciamo a DRF di usare il nostro nuovo

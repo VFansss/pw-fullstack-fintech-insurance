@@ -101,7 +101,8 @@
                                                 <span class="text-4xl mr-4">{ICONS[policy.quote.vehicle_type] || '📄'}</span>
                                                 <div>
                                                     <h3 class="font-bold text-lg text-gray-800">{policy.quote.car_brand} {policy.quote.car_model}</h3>
-                                                    <p class="text-sm text-gray-500">{policy.quote.license_plate}</p>
+                                                    <p class="text-sm text-gray-500">Targa: {policy.quote.license_plate}</p>
+                                                    <p class="text-sm text-gray-500">Guida: {policy.quote.driving_style}</p> 
                                                 </div>
                                             </div>
                                             <ul class="text-sm space-y-2 mt-4">
