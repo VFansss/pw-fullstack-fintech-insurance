@@ -90,7 +90,7 @@
 
         <div class="container mx-auto text-center relative">
             <h2 class="text-4xl font-extrabold tracking-tight">
-                Altri <span class="text-yellow-300">{globalStats.total_policies}</span> veicoli sono sotto la nostra protezione e la nostra cura.
+                Un totale di <span class="text-yellow-300">{globalStats.total_policies}</span> veicoli sono sotto la nostra protezione
             </h2>
             <p class="mt-2 text-lg font-light">Grazie a tutti per la vostra fiducia!</p>
         </div>
