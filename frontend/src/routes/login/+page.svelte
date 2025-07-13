@@ -1,80 +1,85 @@
 <script lang="ts">
+	import { onMount } from 'svelte';
+	import { goto } from '$app/navigation';
+	import { auth } from '$lib/api';
+    import Logo from '$lib/assets/logo.svelte'; // Importiamo il nostro componente Logo
 
-    import { onMount } from 'svelte';
-    import { goto } from '$app/navigation';
-    import { auth } from '$lib/api';
+	let username = $state('');
+	let password = $state('');
+	let errorMessage = $state<string | null>(null);
 
-    let username = $state('');
-    let password = $state('');
-    let errorMessage = $state<string | null>(null);
-
-    onMount(async () => {
-        // Controlla se abbiamo un token
+	onMount(async () => {
+		// ... la tua logica onMount rimane identica ...
         const token = localStorage.getItem('authToken');
         if (token) {
             try {
-                // Prova a ottenere i dati dell'utente. Questa chiamata fallirà se il token non è valido.
                 await auth.getUser();
-                // Se la chiamata ha successo, il token è valido! Reindirizziamo l'utente alla sua dashboard.
                 goto('/dashboard', { replaceState: true }); 
             } catch (error) {
-                // Il token non è valido. Lo rimuoviamo per sicurezza e lasciamo l'utente sulla pagina di login.
                 localStorage.removeItem('authToken');
                 console.log('Token non valido, rimosso.');
             }
         }
-    });
+	});
 
-    async function handleLogin() {
-        errorMessage = null;
-        try {
-            const result = await auth.login({ username, password });
-            
-            console.log('Login riuscito! Token:', result.key);
-            localStorage.setItem('authToken', result.key);
-            
-            goto('/dashboard', { replaceState: true });
-            
-        } catch (error: any) {
-            errorMessage = error.message || 'Errore sconosciuto.';
-        }
-    }
+	async function handleLogin(event: SubmitEvent) { // Aggiungiamo il tipo all'evento
+		event.preventDefault(); // E preveniamo il default
+		errorMessage = null;
+		try {
+			const result = await auth.login({ username, password });
+			localStorage.setItem('authToken', result.key);
+			goto('/dashboard', { replaceState: true });
+		} catch (error: any) {
+			errorMessage = error.message || 'Credenziali non valide.';
+		}
+	}
 </script>
 
-<div class="min-h-screen bg-gray-100 flex flex-col justify-center items-center">
-    <div class="bg-white p-8 rounded-lg shadow-md w-96">
-        <h1 class="text-2xl font-bold mb-6 text-center">Accedi ad AlCoperto</h1>
+<div class="min-h-screen bg-gray-100 flex flex-col justify-center items-center p-4">
+	<div class="w-full max-w-sm">
+        
 
-        <form onsubmit={handleLogin}>
-            <div class="mb-4">
-                <label for="username" class="block text-gray-700 mb-2">Username</label>
-                <input
-                    type="text"
-                    id="username"
-                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500"
-                    bind:value={username}
-                />
+		<div class="bg-white p-8 rounded-xl shadow-md">
+            <!-- ===== BLOCCO LOGO AGGIUNTO ===== -->
+            <div class="flex justify-center mb-6">
+                <button onclick={() => goto('/')} class=" cursor-pointer transition-transform transform hover:scale-110">
+                    <Logo class="h-16 w-16 text-blue-600" />
+                </button>
             </div>
-            <div class="mb-6">
-                <label for="password" class="block text-gray-700 mb-2">Password</label>
-                <input
-                    type="password"
-                    id="password"
-                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500"
-                    bind:value={password}
-                />
-            </div>
+            <!-- ================================ -->
+			<h1 class="text-2xl font-bold mb-6 text-center text-gray-800">Accedi ad AlCoperto</h1>
 
-            {#if errorMessage}
-                <p class="text-red-500 text-sm mb-4">{errorMessage}</p>
-            {/if}
+			<form onsubmit={handleLogin}>
+				<div class="mb-4">
+					<label for="username" class="block text-gray-700 mb-2">Username</label>
+					<input
+						type="text"
+						id="username"
+						class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+						bind:value={username}
+					/>
+				</div>
+				<div class="mb-6">
+					<label for="password" class="block text-gray-700 mb-2">Password</label>
+					<input
+						type="password"
+						id="password"
+						class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+						bind:value={password}
+					/>
+				</div>
 
-            <button
-                type="submit"
-                class="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition-colors"
-            >
-                Login
-            </button>
-        </form>
-    </div>
+				{#if errorMessage}
+					<p class="text-red-500 text-sm mb-4 text-center">{errorMessage}</p>
+				{/if}
+
+				<button
+					type="submit"
+					class="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition-colors font-semibold"
+				>
+					Login
+				</button>
+			</form>
+		</div>
+	</div>
 </div>

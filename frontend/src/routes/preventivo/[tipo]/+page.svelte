@@ -140,7 +140,7 @@
                             ← Indietro
                         </button>
                     {:else}
-                        <span />
+                        <span></span>
                     {/if}
 
                     {#if currentStep < 3}
