@@ -8,11 +8,13 @@ from rest_framework.response import Response
 from rest_framework import status
 from datetime import date, timedelta
 from .models import Policy, Quote
+from django.db.models import Count
 from .serializers import QuoteSerializer, SimulateQuoteSerializer, PolicySerializer
+
+from rest_framework.decorators import action
 
 class QuoteViewSet(viewsets.ModelViewSet):
     serializer_class = QuoteSerializer
-    # Questo endpoint ora è COMPLETAMENTE privato.
     permission_classes = [permissions.IsAuthenticated]
 
     def get_queryset(self):
@@ -38,6 +40,24 @@ class QuoteViewSet(viewsets.ModelViewSet):
         
         # Salviamo il preventivo, associandolo FORZATAMENTE all'utente della richiesta.
         serializer.save(user=self.request.user, premium_price=prezzo_calcolato)
+
+    @action(detail=False, methods=['delete'], url_path='clear-all')
+    def clear_all(self, request):
+        """
+        Cancella tutti i preventivi dell'utente che non sono
+        stati convertiti in polizze.
+        """
+        user = request.user
+        
+        # Selezioniamo solo i preventivi dell'utente che NON hanno una polizza associata.
+        quotes_to_delete = Quote.objects.filter(user=user, policy__isnull=True)
+        
+        count = quotes_to_delete.count()
+        quotes_to_delete.delete()
+        
+        # Restituiamo una risposta 204 No Content, che è lo standard per
+        # una cancellazione avvenuta con successo.
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 BRANDS_DATA = {
     'auto': [
@@ -139,13 +159,15 @@ class PolicyStatsView(APIView):
             user=request.user, 
             status='active'
         ).values(
-            'quote__vehicle_type' # Raggruppa per il tipo di veicolo del preventivo associato
+            'quote__vehicle_type'
         ).annotate(
-            count=count('id') # Conta le polizze in ogni gruppo
+            # --- MODIFICA QUESTA RIGA ---
+            # Invece di contare l'ID generico, contiamo le occorrenze
+            # del campo per cui stiamo raggruppando. È più robusto.
+            count=Count('quote__vehicle_type') 
+            # --- FINE MODIFICA ---
         ).order_by('quote__vehicle_type')
         
-        # Il risultato sarà qualcosa come: 
-        # [{'quote__vehicle_type': 'auto', 'count': 5}, {'quote__vehicle_type': 'moto', 'count': 2}]
         return Response(stats)
 
 

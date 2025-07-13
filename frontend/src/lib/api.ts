@@ -193,6 +193,12 @@ export const quotes = {
      * Richiede un token valido e che l'utente sia il proprietario del preventivo.
      */
     getById: (id: number) => apiFetch(`/api/quotes/${id}/`),
+
+    clearAll: () => 
+        apiFetch('/api/quotes/clear-all/', {
+            method: 'DELETE',
+        }),
+
 };
 
 export const general = {
