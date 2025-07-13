@@ -80,6 +80,19 @@
 					Login
 				</button>
 			</form>
+
+			<!-- Separator and redirect for non-registered users -->
+			<div class="mt-6 pt-6 border-t border-gray-200">
+				<p class="text-green-800 text-center mb-4">
+					Non sei ancora assicurato da noi? Crea prima un preventivo, per accedere alla tua area personale
+				</p>
+				<button
+					onclick={() => goto('/preventivo')}
+					class="cursor-pointer w-full bg-green-600 text-white py-2 rounded-lg hover:bg-green-700 transition-colors font-semibold"
+				>
+					Crea un Preventivo
+				</button>
+			</div>
 		</div>
 	</div>
 </div>
