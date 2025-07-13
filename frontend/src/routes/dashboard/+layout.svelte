@@ -3,6 +3,6 @@
     let { children } = $props();
 </script>
 
-<MinimalLayout title="AlCoperto / Preventivo">
+<MinimalLayout title="AlCoperto / Area Personale - Dashboard">
     {@render children()}
 </MinimalLayout>
