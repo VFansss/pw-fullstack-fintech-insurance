@@ -4,6 +4,7 @@
 	import { goto } from '$app/navigation';
 	import { quotes, policies } from '$lib/api';
 	import type { QuoteData } from '$lib/api'; // Assumendo che questo tipo esista
+	import { base } from '$app/paths';
 
 	// === STATO DEL COMPONENTE ===
 	let quote = $state<any>(null); // Qui andranno i dettagli del preventivo
@@ -63,7 +64,7 @@
 			<!-- Mostra errore solo se non siamo riusciti a caricare nulla -->
 			<div class="bg-white p-6 rounded-lg shadow text-center">
 				<p class="text-red-500 font-semibold">{error}</p>
-				<a href="/dashboard" class="mt-4 inline-block text-blue-500 hover:underline">
+				<a href={base+"/dashboard"} class="mt-4 inline-block text-blue-500 hover:underline">
 					← Torna alla dashboard
 				</a>
 			</div>
@@ -74,7 +75,7 @@
 						<h1 class="text-3xl font-bold text-gray-900">Riepilogo Preventivo</h1>
 						<p class="text-gray-500">Pronto per essere attivato!</p>
 					</div>
-					<a href="/dashboard" class="text-sm text-blue-600 hover:underline">← Dashboard</a>
+					<a href={base+"/dashboard"} class="text-sm text-blue-600 hover:underline">← Dashboard</a>
 				</div>
 
 				<!-- Dettagli del Veicolo -->

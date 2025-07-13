@@ -4,6 +4,7 @@
 	import { fade, fly } from 'svelte/transition';
 	import { cubicOut } from 'svelte/easing';
 	import Logo from '$lib/assets/logo.svelte';
+	import { base } from '$app/paths';
 
 	// === STATO PER LA NAVBAR ===
 	let isMenuOpen = $state(false);
@@ -45,7 +46,7 @@
 	<!-- ================== NAVBAR CON DROPDOWN ================== -->
 	<nav class="bg-white/80 backdrop-blur-md shadow-sm sticky top-0 z-50">
 		<div class="container mx-auto px-6 py-3 flex justify-between items-center">
-			<a href="/" class="flex items-center space-x-2" title="Home AlCoperto">
+			<a href={base+"/"} class="flex items-center space-x-2" title="Home AlCoperto">
 				<Logo class="h-8 w-8 text-blue-600" />
 				<span class="text-2xl font-bold text-gray-800">AlCoperto</span>
 			</a>
@@ -59,14 +60,13 @@
 					</button>
 					{#if isMenuOpen}
 						<div class="absolute mt-2 w-48 bg-white rounded-md shadow-xl py-1 z-20">
-							<a href="/preventivatore/auto" class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600">Assicurazione Auto</a>
-							<a href="/preventivatore/moto" class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600">Assicurazione Moto</a>
-							<a href="/preventivatore/autocarro" class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600">Assicurazione Autocarro</a>
+							<a href={base+"/preventivatore/auto"} class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600">Assicurazione Auto</a>
+							<a href={base+"/preventivatore/moto"} class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600">Assicurazione Moto</a>
+							<a href={base+"/preventivatore/autocarro"} class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600">Assicurazione Autocarro</a>
 						</div>
 					{/if}
 				</div>
-				<a href="#" class="text-gray-700 hover:text-blue-600">Chi siamo</a>
-				<a href="/login" class="px-4 py-2 text-gray-800 font-semibold rounded-lg hover:bg-gray-100">Area Personale</a>
+				<a href={base+"/login"} class="px-4 py-2 text-gray-800 font-semibold rounded-lg hover:bg-gray-100">Area Personale</a>
 				<button onclick={() => goto('/preventivatore/auto')} class="px-5 py-2 bg-blue-600 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 transition-colors">Fai un preventivo</button>
 			</div>
 			
@@ -93,17 +93,16 @@
 					<!-- Mobile Insurance Submenu -->
 					<div class="space-y-2">
 						<div class="text-sm font-semibold text-gray-500 uppercase tracking-wide">Assicurazioni</div>
-						<a href="/preventivatore/auto" onclick={() => isMobileMenuOpen = false} class="block px-3 py-2 text-gray-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg">🚗 Assicurazione Auto</a>
-						<a href="/preventivatore/moto" onclick={() => isMobileMenuOpen = false} class="block px-3 py-2 text-gray-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg">🏍️ Assicurazione Moto</a>
-						<a href="/preventivatore/autocarro" onclick={() => isMobileMenuOpen = false} class="block px-3 py-2 text-gray-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg">🚚 Assicurazione Autocarro</a>
+						<a href={base+"/preventivatore/auto"} onclick={() => isMobileMenuOpen = false} class="block px-3 py-2 text-gray-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg">🚗 Assicurazione Auto</a>
+						<a href={base+"/preventivatore/moto"} onclick={() => isMobileMenuOpen = false} class="block px-3 py-2 text-gray-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg">🏍️ Assicurazione Moto</a>
+						<a href={base+"/preventivatore/autocarro"} onclick={() => isMobileMenuOpen = false} class="block px-3 py-2 text-gray-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg">🚚 Assicurazione Autocarro</a>
 					</div>
 					
 					<!-- Divider -->
 					<div class="border-t border-gray-200 my-4"></div>
 					
 					<!-- Other Menu Items -->
-					<a href="#" onclick={() => isMobileMenuOpen = false} class="block px-3 py-2 text-gray-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg">Chi siamo</a>
-					<a href="/login" onclick={() => isMobileMenuOpen = false} class="block px-3 py-2 text-gray-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg">Area Personale</a>
+					<a href={base+"/login"} onclick={() => isMobileMenuOpen = false} class="block px-3 py-2 text-gray-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg">Area Personale</a>
 					
 					<!-- CTA Button -->
 					<button 
@@ -201,7 +200,7 @@
 <section class="py-20">
 	<div class="container mx-auto px-6 grid md:grid-cols-2 gap-12 items-center">
 		<div>
-			<img src="/app-screen.jpg" alt="Schermata dell'app AlCoperto" class="rounded-xl shadow-2xl">
+			<img src={base+"/app-screen.jpg"} alt="Schermata dell'app AlCoperto" class="rounded-xl shadow-2xl">
 		</div>
 		<div>
 			<h2 class="text-4xl font-bold text-gray-800">Risparmia fino a €200 sul rinnovo di polizza</h2>

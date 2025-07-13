@@ -3,6 +3,7 @@
 	import { goto } from '$app/navigation';
 	import { auth, quotes, policies, general } from '$lib/api';
     import PolicyChart from '$lib/components/PolicyChart.svelte';
+    import { base } from '$app/paths';
 
 	// === STATO DEL COMPONENTE ===
 	let user = $state<any>({});
@@ -68,7 +69,7 @@
 <div class="min-h-screen bg-gray-100">
     <header class="bg-white shadow-sm sticky top-0 z-10">
         <div class="container mx-auto p-4 flex justify-between items-center">
-            <a href="/" class="text-2xl font-bold text-blue-600">AlCoperto</a>
+            <a href={base+"/"} class="text-2xl font-bold text-blue-600">AlCoperto</a>
             {#if !isLoading && !error}
                 <div>
                     <span class="text-gray-700 mr-4">Ciao, {user.first_name || user.username}!</span>
@@ -166,7 +167,7 @@
 								<ul class="space-y-4">
 									{#each userQuotes as quote (quote.id)}
 										<li class="border bg-white p-4 rounded-lg hover:shadow-lg hover:border-blue-300 transition-all duration-300">
-											<a href="/preventivo/{quote.id}" class="block">
+											<a href={base+"/preventivo/{quote.id}"} class="block">
 												<div class="flex justify-between items-center">
 													<div>
 														<p class="font-bold text-lg text-gray-800">{quote.car_brand} {quote.car_model}</p>
@@ -185,7 +186,7 @@
 							{:else}
 								<div class="text-center py-10 px-4 border-2 border-dashed rounded-lg">
 									<p class="text-gray-600">Ottimo! Non hai preventivi in sospeso.</p>
-									<a href="/preventivatore" class="mt-3 inline-block px-5 py-2 bg-green-500 text-white font-semibold rounded-lg hover:bg-green-600 transition-colors">
+									<a href={base+"/preventivatore"} class="mt-3 inline-block px-5 py-2 bg-green-500 text-white font-semibold rounded-lg hover:bg-green-600 transition-colors">
 										Crea un nuovo preventivo
 									</a>
 								</div>
