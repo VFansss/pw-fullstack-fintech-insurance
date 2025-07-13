@@ -19,12 +19,18 @@ class QuoteViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         """
-        Un utente può vedere solo i propri preventivi.
+        Un utente può vedere solo i propri preventivi
+        E SOLO quelli che non sono ancora stati convertiti in polizze.
         """
-        # La logica rimane la stessa: uniamo preventivi associati
-        # all'ID utente o alla sua email (per recuperare quelli "orfani").
         user = self.request.user
-        return Quote.objects.filter(Q(user=user) | Q(email=user.email))
+        
+        # --- ECCO LA MODIFICA ---
+        # Aggiungiamo .filter(policy__isnull=True) per escludere
+        # i preventivi che hanno una polizza collegata.
+        return Quote.objects.filter(
+            Q(user=user) | Q(email=user.email),
+            policy__isnull=True  # Questa riga è la magia!
+        )
 
     def perform_create(self, serializer):
         """
