@@ -36,7 +36,7 @@ if os.environ.get('APP_DEBUG') is not None and os.environ.get('APP_DEBUG') == "T
     print("[PYTHON] Debug mode enabled")
     DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["vfansss.eu.pythonanywhere.com"]
 
 
 # Application definition
