@@ -30,7 +30,7 @@ jobs:
         # Passiamo la variabile d'ambiente per il base path
         env:
           BASE_PATH: '/${{ github.event.repository.name }}'
-          PUBLIC_BACKEND_URL: 'http://localhost:8000'
+          PUBLIC_BACKEND_URL: 'https://vfansss.eu.pythonanywhere.com'
         run: npm run build
         # <<< LA SECONDA MODIFICA CHIAVE >>>
         # Esegui anche la build DENTRO /frontend
