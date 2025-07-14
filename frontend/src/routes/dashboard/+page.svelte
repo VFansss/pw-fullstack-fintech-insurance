@@ -167,7 +167,7 @@
 								<ul class="space-y-4">
 									{#each userQuotes as quote (quote.id)}
 										<li class="border bg-white p-4 rounded-lg hover:shadow-lg hover:border-blue-300 transition-all duration-300">
-											<a href={base+"/preventivo/{quote.id}"} class="block">
+											<a href={base+"/preventivo/"+quote.id} class="block">
 												<div class="flex justify-between items-center">
 													<div>
 														<p class="font-bold text-lg text-gray-800">{quote.car_brand} {quote.car_model}</p>
