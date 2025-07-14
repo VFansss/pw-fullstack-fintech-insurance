@@ -47,9 +47,13 @@ urlpatterns = [
     path('api/schema/swagger-ui/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
     path('api/schema/redoc/', SpectacularRedocView.as_view(url_name='schema'), name='redoc'),
 
+    # API per simulare una quotazione di una polizza
     path('api/quotes/simulate/', SimulateQuoteView.as_view(), name='quote-simulate'),
 
+    # API che Restituisce statistiche aggregate sulle polizze di un utente
     path('api/policies/stats/', PolicyStatsView.as_view(), name='policy-stats'),
+
+    # API di conversione di una quotazione in una polizza
     path('api/policies/create-from-quote/', CreatePolicyFromQuoteView.as_view(), name='policy-create-from-quote'),
 
     # Public API
@@ -57,7 +61,7 @@ urlpatterns = [
     path('api/vehicle-data/<str:vehicle_type>/<str:data_type>/', VehicleDataView.as_view(), name='vehicle-data'),
 
     # Estendi le URL del router per le quote
-    # !!! Tieniti presente che questo include tutte le operazioni CRUD per le quote !!!
+    # !!! Questa route include le operazioni CRUD per le quote !!!
     path('api/', include(router.urls)),
 
 ]
