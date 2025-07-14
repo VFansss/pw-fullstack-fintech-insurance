@@ -185,7 +185,7 @@ REST_AUTH = {
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173", # Porta di default di SvelteKit dev server
     "http://127.0.0.1:5173",
-    "htpps://VFansss.pythonanywhere.com",
+    "htpps://vfansss.eu.pythonanywhere.com",
     "htpps://vfansss.github.io"
 ]
 
