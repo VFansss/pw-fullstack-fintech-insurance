@@ -143,7 +143,7 @@
 			</p>
 			<div class="mt-10">
 				<button 
-					onclick={() => goto(base+'/preventivatore/auto')} 
+					onclick={() => goto(base+'/preventivatore')} 
 					class="px-10 py-4 bg-blue-600 text-white font-bold rounded-full text-xl hover:bg-blue-700 transition-transform transform hover:scale-105 shadow-2xl"
 				>
 					Calcola Preventivo
