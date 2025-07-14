@@ -10,20 +10,31 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
+import os
 from pathlib import Path
+
+from dotenv import load_dotenv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+load_dotenv(os.path.join(BASE_DIR, '.env'))
 
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-gr=2ps^-zfze+9=l@gjy%u3%5f_tb)v^q&+z0zi-c3anjln-$u'
+# Note: you can create a new secret key using
+# python -c 'from django.core.management.utils import get_random_secret_key; print(get_random_secret_key())'
+SECRET_KEY = os.getenv('APP_SECRET_KEY', 'no-secret-key-set-in-environment-SET-ONE!')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
+
+if os.environ.get('APP_DEBUG') is not None and os.environ.get('APP_DEBUG') == "True":
+    print("[PYTHON] Debug mode enabled")
+    DEBUG = True
 
 ALLOWED_HOSTS = []
 
@@ -174,6 +185,8 @@ REST_AUTH = {
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173", # Porta di default di SvelteKit dev server
     "http://127.0.0.1:5173",
+    "htpps://VFansss.pythonanywhere.com",
+    "htpps://vfansss.github.io"
 ]
 
 # Per evitare problemi con CSRF in fase di test con Postman/Insomnia
