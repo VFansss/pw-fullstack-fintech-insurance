@@ -91,9 +91,9 @@
 
         <div class="container mx-auto text-center relative">
             <h2 class="text-4xl font-extrabold tracking-tight">
-                Un totale di <span class="text-yellow-300">{globalStats.total_policies}</span> veicoli sono sotto la nostra protezione
+                AlCoperto protegge già <span class="text-yellow-300">{globalStats.total_policies}</span> veicoli in tutta Italia!
             </h2>
-            <p class="mt-2 text-lg font-light">Grazie a tutti per la vostra fiducia!</p>
+            <p class="mt-2 text-lg font-light">Grazie a tutti per la vostra fiducia, e grazie a te per essere entrato a far parte della nostra community</p>
         </div>
     </section>
     {/if}
